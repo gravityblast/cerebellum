@@ -9,11 +9,18 @@ import (
 )
 
 const VERSION = "0.1.0"
+var router *traffic.Router
 
 var UUIDRegexp *regexp.Regexp
 
 func init() {
   UUIDRegexp = regexp.MustCompile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
+
+  router = traffic.New()
+  router.AddBeforeFilter(SetDefaultHeaders)
+
+  router.Get("/", RootHandler)
+  router.Get("/artists/:gid", ArtistHandler)
 }
 
 func isValidUUID(uuid string) bool {
@@ -28,11 +35,6 @@ func SetDefaultHeaders(w http.ResponseWriter, r *http.Request) bool {
 }
 
 func main() {
-  router := traffic.New()
-  router.AddBeforeFilter(SetDefaultHeaders)
-
-  router.Get("/", RootHandler)
-  router.Get("/artists/:gid", ArtistHandler)
   http.Handle("/", router)
 
   port := os.Getenv("PORT")
