@@ -6,6 +6,11 @@ import (
 )
 
 func init() {
+  err := DB.Ping()
+  if err != nil {
+    panic(err)
+  }
+
   router.RequestLogFunc = func(int, *http.Request) {}
 }
 
