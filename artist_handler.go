@@ -4,12 +4,13 @@ import (
   "net/http"
   "encoding/json"
   "database/sql"
+  "github.com/pilu/traffic"
 )
 
 type Artist struct {
-  Gid string `json:"gid"`
-  Name string `json:"name"`
-  SortName string `json:"sortName"`
+  Gid       string `json:"gid"`
+  Name      string `json:"name"`
+  SortName  string `json:"sortName"`
 }
 
 const FindArtistByGidQuery = `select A.gid as gid, AN.name as artist_name, ASN.name as sort_name from
@@ -22,12 +23,12 @@ func FindArtistByGid(gid string) (*Artist, error) {
   if !isValidUUID(gid) {
     return artist, InvalidUUID{ gid }
   }
-  err := DB.QueryRow(FindArtistByGidQuery, gid).Scan(&artist.Gid, &artist.Name, &artist.SortName)
+  row := DB.QueryRow(FindArtistByGidQuery, gid).Scan(&artist.Gid, &artist.Name, &artist.SortName)
 
-  return artist, err
+  return artist, row
 }
 
-func ArtistHandler(w http.ResponseWriter, r *http.Request) {
+func ArtistHandler(w traffic.ResponseWriter, r *http.Request) {
   gid := r.URL.Query().Get("gid")
   artist, err := FindArtistByGid(gid)
 

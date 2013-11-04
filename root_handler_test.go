@@ -13,5 +13,5 @@ func TestRootHandler(t *testing.T) {
   expectedBody := fmt.Sprintf(`{"version":"%s"}` + "\n", VERSION)
   assert.Equal(t, expectedBody, body)
   assert.Equal(t, 200, recorder.Code)
-  assert.Equal(t, []string{"application/json"}, recorder.HeaderMap["Content-Type"])
+  assert.Equal(t, []string{"application/json; charset=utf-8"}, recorder.HeaderMap["Content-Type"])
 }

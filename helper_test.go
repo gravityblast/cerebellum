@@ -10,8 +10,6 @@ func init() {
   if err != nil {
     panic(err)
   }
-
-  router.RequestLogFunc = func(int, *http.Request) {}
 }
 
 func newTestRequest(method, path string) *httptest.ResponseRecorder  {
