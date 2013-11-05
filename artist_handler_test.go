@@ -11,7 +11,8 @@ func TestArtistHandler_WithExistingGid(t *testing.T) {
   recorder := newTestRequest("GET", "/artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56")
 
   body := string(recorder.Body.Bytes())
-  expectedBody := `{"gid":"056e4f3e-d505-4dad-8ec1-d04f521cbb56","name":"Daft Punk","sortName":"Daft Punk"}` + "\n"
+  expectedBody := `{"gid":"056e4f3e-d505-4dad-8ec1-d04f521cbb56","name":"Daft Punk","comment":"","beginDate":"1992","endDate":null,"sortName":"Daft Punk","type":"Group"}` + "\n"
+
   assert.Equal(t, expectedBody, body)
   assert.Equal(t, 200, recorder.Code)
 }
