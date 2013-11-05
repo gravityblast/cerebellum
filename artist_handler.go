@@ -53,10 +53,11 @@ func FindArtistByGid(gid string) (*Artist, error) {
   var endDateMonth    *sql.NullInt64
   var endDateDay      *sql.NullInt64
 
-  err := DB.QueryRow(FindArtistByGidQuery, gid).Scan(&artist.Gid, &name, &artist.Comment,
-                                                      &beginDateYear, &beginDateMonth, &beginDateDay,
-                                                      &endDateYear, &endDateMonth, &endDateDay,
-                                                      &sortName, &_type)
+  row := DB.QueryRow(FindArtistByGidQuery, gid)
+  err := row.Scan(&artist.Gid, &name, &artist.Comment,
+                  &beginDateYear, &beginDateMonth, &beginDateDay,
+                  &endDateYear, &endDateMonth, &endDateDay,
+                  &sortName, &_type)
 
   if beginDateYear != nil {
     date := fmt.Sprintf("%d", beginDateYear.Int64)
