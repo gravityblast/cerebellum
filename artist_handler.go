@@ -11,25 +11,20 @@ import (
 type Artist struct {
   Gid       string  `json:"gid"`
   Name      string  `json:"name"`
+  SortName  string  `json:"sortName"`
   Comment   string  `json:"comment"`
   BeginDate *string `json:"beginDate"`
   EndDate   *string `json:"endDate"`
-  SortName  string  `json:"sortName"`
   Type      string  `json:"type"`
 }
 
 const FindArtistByGidQuery = `
   SELECT
-    A.gid, AN.name, A.comment,
+    A.gid, A.name, A.sort_name, A.comment,
     A.begin_date_year, A.begin_date_month, A.begin_date_day,
-    A.end_date_year, A.end_date_month, A.end_date_day,
-    ASN.name, AT.name
+    A.end_date_year, A.end_date_month, A.end_date_day, AT.name
   FROM
     artist A
-  LEFT JOIN artist_name AN
-    ON A.name = AN.id
-  LEFT JOIN artist_name ASN
-    ON A.sort_name = ASN.id
   LEFT JOIN artist_type AT
     ON A.type = AT.id
   WHERE
@@ -42,8 +37,6 @@ func FindArtistByGid(gid string) (*Artist, error) {
     return artist, InvalidUUID{ gid }
   }
 
-  var name     *sql.NullString
-  var sortName *sql.NullString
   var _type    *sql.NullString
 
   var beginDateYear   *sql.NullInt64
@@ -54,10 +47,13 @@ func FindArtistByGid(gid string) (*Artist, error) {
   var endDateDay      *sql.NullInt64
 
   row := DB.QueryRow(FindArtistByGidQuery, gid)
-  err := row.Scan(&artist.Gid, &name, &artist.Comment,
+  err := row.Scan(&artist.Gid, &artist.Name, &artist.SortName, &artist.Comment,
                   &beginDateYear, &beginDateMonth, &beginDateDay,
-                  &endDateYear, &endDateMonth, &endDateDay,
-                  &sortName, &_type)
+                  &endDateYear, &endDateMonth, &endDateDay, &_type)
+
+  if err != nil {
+    return artist, err
+  }
 
   if beginDateYear != nil {
     date := fmt.Sprintf("%d", beginDateYear.Int64)
@@ -87,19 +83,11 @@ func FindArtistByGid(gid string) (*Artist, error) {
     artist.EndDate = &date
   }
 
-  if name != nil {
-    artist.Name = name.String
-  }
-
-  if sortName != nil {
-    artist.SortName = sortName.String
-  }
-
   if _type != nil {
     artist.Type = _type.String
   }
 
-  return artist, err
+  return artist, nil
 }
 
 func ArtistHandler(w traffic.ResponseWriter, r *http.Request) {
