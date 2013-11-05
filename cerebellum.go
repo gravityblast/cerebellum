@@ -2,8 +2,6 @@ package main
 
 import (
   "os"
-  "fmt"
-  "regexp"
   "net/http"
   "encoding/json"
   "database/sql"
@@ -12,18 +10,23 @@ import (
 )
 
 const VERSION = "0.1.0"
-var router *traffic.Router
 
-var UUIDRegexp = regexp.MustCompile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
+var (
+  router *traffic.Router
+  DB     *sql.DB
+)
 
-var DB *sql.DB
-
-type InvalidUUID struct {
-  UUID string
+func NotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
+  json.NewEncoder(w).Encode(map[string]string{
+    "error": "Not Found",
+  })
 }
 
-func (err InvalidUUID) Error() string {
-  return fmt.Sprintf("Invalid UUID: %v", err.UUID)
+func SetDefaultHeaders(w traffic.ResponseWriter, r *http.Request) bool {
+  w.Header().Set("Cerebellum-Version", VERSION)
+  w.Header().Set("Content-Type", "application/json; charset=utf-8")
+
+  return true
 }
 
 func init() {
@@ -40,23 +43,6 @@ func init() {
   router.Get("/", RootHandler)
   router.Get("/artists/:gid",         ArtistHandler)
   router.Get("/release-groups/:gid",  ReleaseGroupHandler)
-}
-
-func NotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
-  json.NewEncoder(w).Encode(map[string]string{
-    "error": "Not Found",
-  })
-}
-
-func isValidUUID(uuid string) bool {
-  return UUIDRegexp.MatchString(uuid)
-}
-
-func SetDefaultHeaders(w traffic.ResponseWriter, r *http.Request) bool {
-  w.Header().Set("Cerebellum-Version", VERSION)
-  w.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-  return true
 }
 
 func main() {
