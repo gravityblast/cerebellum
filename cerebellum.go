@@ -14,7 +14,8 @@ import (
 const VERSION = "0.1.0"
 var router *traffic.Router
 
-var UUIDRegexp *regexp.Regexp
+var UUIDRegexp = regexp.MustCompile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
+
 var DB *sql.DB
 
 type InvalidUUID struct {
@@ -26,8 +27,6 @@ func (err InvalidUUID) Error() string {
 }
 
 func init() {
-  UUIDRegexp = regexp.MustCompile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
-
   var err error
   DB, err = sql.Open("postgres", os.Getenv("DB"))
   if err != nil {
@@ -39,7 +38,8 @@ func init() {
   router.AddBeforeFilter(SetDefaultHeaders)
 
   router.Get("/", RootHandler)
-  router.Get("/artists/:gid", ArtistHandler)
+  router.Get("/artists/:gid",         ArtistHandler)
+  router.Get("/release-groups/:gid",  ReleaseGroupHandler)
 }
 
 func NotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
