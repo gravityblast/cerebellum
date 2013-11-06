@@ -2,7 +2,6 @@ package main
 
 import (
   "testing"
-  /* "fmt" */
   assert "github.com/pilu/miniassert"
 )
 

@@ -8,18 +8,18 @@ import (
   "github.com/pilu/traffic"
 )
 
-type ReleaseGroupArtist struct {
+type ReleaseArtist struct {
   Gid   string `json:"gid"`
   Name  string `json:"name"`
 }
 
 type ReleaseGroup struct {
-  Gid               string                 `json:"gid"`
-  Name              string                 `json:"name"`
-  Comment           string                 `json:"comment"`
-  FirstReleaseDate  string                 `json:"firstReleaseDate"`
-  Type              string                 `json:"type"`
-  Artists           []*ReleaseGroupArtist  `json:"artists"`
+  Gid               string           `json:"gid"`
+  Name              string           `json:"name"`
+  Comment           string           `json:"comment"`
+  FirstReleaseDate  string           `json:"firstReleaseDate"`
+  Type              string           `json:"type"`
+  Artists           []*ReleaseArtist `json:"artists"`
 }
 
 const FindReleaseGroupByGidQuery = `
@@ -34,35 +34,6 @@ const FindReleaseGroupByGidQuery = `
     ON RG.id = RGM.id
   WHERE
     RG.gid = $1 limit 1;`
-
-const FindArtistsByArtistCreditQuery = `
-  SELECT
-    A.gid, A.name
-  FROM
-    artist_credit_name ACN
-  JOIN artist A
-    on A.id = ACN.artist
-  WHERE
-    ACN.artist_credit = $1;`
-
-func FindArtistsByArtistCredit(artistCredit int) []*ReleaseGroupArtist {
-  artists := make([]*ReleaseGroupArtist, 0)
-
-  rows, err := DB.Query(FindArtistsByArtistCreditQuery, artistCredit)
-  if err != nil {
-    return artists
-  }
-
-  for rows.Next() {
-    artist := &ReleaseGroupArtist{}
-    err := rows.Scan(&artist.Gid, &artist.Name)
-    if err == nil {
-      artists = append(artists, artist)
-    }
-  }
-
-  return artists
-}
 
 func FindReleaseGroupByGid(gid string) (*ReleaseGroup, error) {
   releaseGroup := &ReleaseGroup{}
@@ -104,7 +75,7 @@ func FindReleaseGroupByGid(gid string) (*ReleaseGroup, error) {
     releaseGroup.Type = _type.String
   }
 
-  releaseGroup.Artists = FindArtistsByArtistCredit(artistCredit)
+  releaseGroup.Artists = FindReleaseArtistsByArtistCredit(artistCredit)
 
   return releaseGroup, nil
 }

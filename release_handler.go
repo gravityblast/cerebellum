@@ -8,12 +8,12 @@ import (
 )
 
 type Release struct {
-  Gid               string                 `json:"gid"`
-  Name              string                 `json:"name"`
-  Comment           string                 `json:"comment"`
-  Status            string                 `json:"status"`
-  Packaging         string                 `json:"packaging"`
-  Artists           []*ReleaseGroupArtist  `json:"artists"`
+  Gid               string           `json:"gid"`
+  Name              string           `json:"name"`
+  Comment           string           `json:"comment"`
+  Status            string           `json:"status"`
+  Packaging         string           `json:"packaging"`
+  Artists           []*ReleaseArtist `json:"artists"`
 }
 
 const FindReleaseByGidQuery = `
@@ -54,7 +54,7 @@ func FindReleaseByGid(gid string) (*Release, error) {
     release.Packaging = packaging.String
   }
 
-  release.Artists = FindArtistsByArtistCredit(artistCredit)
+  release.Artists = FindReleaseArtistsByArtistCredit(artistCredit)
 
   return release, nil
 }
