@@ -35,7 +35,6 @@ const FindReleaseGroupByGidQuery = `
   WHERE
     RG.gid = $1 limit 1;`
 
-
 const FindArtistsByArtistCreditQuery = `
   SELECT
     A.gid, A.name
