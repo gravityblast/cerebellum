@@ -29,12 +29,21 @@ func SetDefaultHeaders(w traffic.ResponseWriter, r *http.Request) bool {
   return true
 }
 
-func init() {
+func initDatabase() {
   var err error
   DB, err = sql.Open("postgres", os.Getenv("DB"))
   if err != nil {
     panic(err)
   }
+
+  err = DB.Ping()
+  if err != nil {
+    panic(err)
+  }
+}
+
+func init() {
+  initDatabase()
 
   router = traffic.New()
   router.NotFoundHandler = NotFoundHandler
