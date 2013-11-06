@@ -13,8 +13,8 @@ type Artist struct {
   Name      string  `json:"name"`
   SortName  string  `json:"sortName"`
   Comment   string  `json:"comment"`
-  BeginDate *string `json:"beginDate"`
-  EndDate   *string `json:"endDate"`
+  BeginDate string `json:"beginDate"`
+  EndDate   string `json:"endDate"`
   Type      string  `json:"type"`
 }
 
@@ -66,7 +66,7 @@ func FindArtistByGid(gid string) (*Artist, error) {
       date = fmt.Sprintf("%s-%02d", date, beginDateDay.Int64)
     }
 
-    artist.BeginDate = &date
+    artist.BeginDate = date
   }
 
   if endDateYear != nil {
@@ -80,7 +80,7 @@ func FindArtistByGid(gid string) (*Artist, error) {
       date = fmt.Sprintf("%s-%02d", date, endDateDay.Int64)
     }
 
-    artist.EndDate = &date
+    artist.EndDate = date
   }
 
   if _type != nil {
