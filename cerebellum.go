@@ -53,6 +53,7 @@ func init() {
   router.Get("/artists/:gid",         ArtistHandler)
   router.Get("/release-groups/:gid",  ReleaseGroupHandler)
   router.Get("/releases/:gid",        ReleaseHandler)
+  router.Get("/recordings/:gid",      RecordingHandler)
 }
 
 func main() {
