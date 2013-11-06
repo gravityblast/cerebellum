@@ -10,7 +10,7 @@ func TestReleaseGroupHandler_WithExistingGid(t *testing.T) {
   recorder := newTestRequest("GET", "/release-groups/aa997ea0-2936-40bd-884d-3af8a0e064dc")
 
   body := string(recorder.Body.Bytes())
-  expectedBody := `{"gid":"aa997ea0-2936-40bd-884d-3af8a0e064dc","name":"Random Access Memories","comment":"","firstReleaseDate":"2013-05-17","type":"Album"}` + "\n"
+  expectedBody := `{"gid":"aa997ea0-2936-40bd-884d-3af8a0e064dc","name":"Random Access Memories","comment":"","firstReleaseDate":"2013-05-17","type":"Album","artists":[{"gid":"056e4f3e-d505-4dad-8ec1-d04f521cbb56","name":"Daft Punk"}]}` + "\n"
 
   assert.Equal(t, expectedBody, body)
   assert.Equal(t, 200, recorder.Code)
