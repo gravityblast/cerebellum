@@ -7,6 +7,7 @@ import (
   "database/sql"
   _ "github.com/bmizerany/pq"
   "github.com/pilu/traffic"
+  "github.com/pilu/cerebellum/models"
 )
 
 const VERSION = "0.1.0"
@@ -40,6 +41,8 @@ func initDatabase() {
   if err != nil {
     panic(err)
   }
+
+  models.DB = DB
 }
 
 func init() {
@@ -54,6 +57,7 @@ func init() {
   router.Get("/release-groups/:gid", ReleaseGroupHandler)
   router.Get("(/artists/:artist_gid)?/releases/:gid", ReleaseHandler)
   router.Get("(/artists/:artist_gid)?/releases/:release_gid/recordings", RecordingsHandler)
+  router.Get("/artists/:artist_gid/release-groups", ReleaseGroupsHandler)
   router.Get("/recordings/:gid", RecordingHandler)
 }
 

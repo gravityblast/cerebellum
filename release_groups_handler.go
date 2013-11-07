@@ -8,12 +8,12 @@ import (
   "github.com/pilu/cerebellum/models"
 )
 
-func ReleaseGroupHandler(w traffic.ResponseWriter, r *http.Request) {
-  gid := r.URL.Query().Get("gid")
-  releaseGroup, err := models.FindReleaseGroupByGid(gid)
+func ReleaseGroupsHandler(w traffic.ResponseWriter, r *http.Request) {
+  artistGid := r.URL.Query().Get("artist_gid")
+  releaseGroups, err := models.FindReleaseGroupsByArtistGid(artistGid)
 
   if err == nil {
-    json.NewEncoder(w).Encode(releaseGroup)
+    json.NewEncoder(w).Encode(releaseGroups)
   } else if err == sql.ErrNoRows {
     w.WriteHeader(http.StatusNotFound)
   } else if _, ok := err.(models.InvalidUUID); ok {
