@@ -59,9 +59,33 @@ func FindReleaseByGid(gid string) (*Release, error) {
   return release, nil
 }
 
-func ReleaseHandler(w traffic.ResponseWriter, r *http.Request) {
-  gid := r.URL.Query().Get("gid")
+func FindReleaseByArtistGidAndGid(artistGid, gid string) (*Release, error) {
   release, err := FindReleaseByGid(gid)
+  if err != nil {
+    return release, err
+  }
+
+  for _, artist := range release.Artists {
+    if artist.Gid == artistGid {
+      return release, nil
+    }
+  }
+
+  return release, sql.ErrNoRows
+}
+
+func ReleaseHandler(w traffic.ResponseWriter, r *http.Request) {
+  artistGid := r.URL.Query().Get("artist_gid")
+  gid       := r.URL.Query().Get("gid")
+
+  var release *Release
+  var err     error
+
+  if artistGid == "" {
+    release, err = FindReleaseByGid(gid)
+  } else {
+    release, err = FindReleaseByArtistGidAndGid(artistGid, gid)
+  }
 
   if err == nil {
     json.NewEncoder(w).Encode(release)

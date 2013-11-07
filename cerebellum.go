@@ -50,10 +50,11 @@ func init() {
   router.AddBeforeFilter(SetDefaultHeaders)
 
   router.Get("/", RootHandler)
-  router.Get("/artists/:gid",         ArtistHandler)
-  router.Get("/release-groups/:gid",  ReleaseGroupHandler)
-  router.Get("/releases/:gid",        ReleaseHandler)
-  router.Get("/recordings/:gid",      RecordingHandler)
+  router.Get("/artists/:gid", ArtistHandler)
+  router.Get("/release-groups/:gid", ReleaseGroupHandler)
+  router.Get("(/artists/:artist_gid)?/releases/:gid", ReleaseHandler)
+  router.Get("(/artists/:artist_gid)?/releases/:release_gid/recordings", RecordingsHandler)
+  router.Get("/recordings/:gid", RecordingHandler)
 }
 
 func main() {
