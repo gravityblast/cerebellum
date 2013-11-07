@@ -20,7 +20,7 @@ func TestReleaseGroupHandler_WithGidNotFound(t *testing.T) {
   recorder := newTestRequest("GET", "/release-groups/00000000-0000-0000-0000-000000000000")
 
   body := string(recorder.Body.Bytes())
-  assert.Equal(t, `{"error":"Not Found"}` + "\n", body)
+  assert.Equal(t, `{"error":"not found"}` + "\n", body)
   assert.Equal(t, 404, recorder.Code)
 }
 

@@ -1,38 +1,16 @@
-package models
+package artist
 
 import (
   "fmt"
   "database/sql"
+  "github.com/pilu/cerebellum/models"
 )
 
+func ByGid(gid string) (*models.Artist, error) {
+  artist := &models.Artist{}
 
-type Artist struct {
-  Gid       string  `json:"gid"`
-  Name      string  `json:"name"`
-  SortName  string  `json:"sortName"`
-  Comment   string  `json:"comment"`
-  BeginDate string `json:"beginDate"`
-  EndDate   string `json:"endDate"`
-  Type      string  `json:"type"`
-}
-
-const FindArtistByGidQuery = `
-  SELECT
-    A.gid, A.name, A.sort_name, A.comment,
-    A.begin_date_year, A.begin_date_month, A.begin_date_day,
-    A.end_date_year, A.end_date_month, A.end_date_day, AT.name
-  FROM
-    artist A
-  LEFT JOIN artist_type AT
-    ON A.type = AT.id
-  WHERE
-    A.gid = $1 limit 1;`
-
-func FindArtistByGid(gid string) (*Artist, error) {
-  artist := &Artist{}
-
-  if !isValidUUID(gid) {
-    return artist, InvalidUUID{ gid }
+  if !models.IsValidUUID(gid) {
+    return artist, models.InvalidUUID{ gid }
   }
 
   var _type    *sql.NullString
@@ -44,7 +22,7 @@ func FindArtistByGid(gid string) (*Artist, error) {
   var endDateMonth    *sql.NullInt64
   var endDateDay      *sql.NullInt64
 
-  row := DB.QueryRow(FindArtistByGidQuery, gid)
+  row := models.DB.QueryRow(queryByGid, gid)
   err := row.Scan(&artist.Gid, &artist.Name, &artist.SortName, &artist.Comment,
                   &beginDateYear, &beginDateMonth, &beginDateDay,
                   &endDateYear, &endDateMonth, &endDateDay, &_type)
@@ -86,4 +64,39 @@ func FindArtistByGid(gid string) (*Artist, error) {
   }
 
   return artist, nil
+}
+
+func AllByArtistCredit(artistCredit int) []*models.ReleaseArtist {
+  artists := make([]*models.ReleaseArtist, 0)
+
+  rows, err := models.DB.Query(queryAllByArtistCredit, artistCredit)
+  if err != nil {
+    return artists
+  }
+
+  for rows.Next() {
+    artist := &models.ReleaseArtist{}
+    err := rows.Scan(&artist.Gid, &artist.Name)
+    if err == nil {
+      artists = append(artists, artist)
+    }
+  }
+
+  return artists
+}
+
+func Exists(gid string) bool {
+  if !models.IsValidUUID(gid) {
+    return false
+  }
+
+  var found int
+
+  row := models.DB.QueryRow(queryExists, gid)
+  err := row.Scan(&found)
+  if err != nil {
+    return false
+  }
+
+  return true
 }

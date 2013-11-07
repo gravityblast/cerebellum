@@ -2,8 +2,6 @@ package main
 
 import (
   "os"
-  "net/http"
-  "encoding/json"
   "database/sql"
   _ "github.com/bmizerany/pq"
   "github.com/pilu/traffic"
@@ -16,19 +14,6 @@ var (
   router *traffic.Router
   DB     *sql.DB
 )
-
-func NotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
-  json.NewEncoder(w).Encode(map[string]string{
-    "error": "Not Found",
-  })
-}
-
-func SetDefaultHeaders(w traffic.ResponseWriter, r *http.Request) bool {
-  w.Header().Set("Cerebellum-Version", VERSION)
-  w.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-  return true
-}
 
 func initDatabase() {
   var err error

@@ -6,14 +6,22 @@ import (
   "database/sql"
   "github.com/pilu/traffic"
   "github.com/pilu/cerebellum/models"
+  "github.com/pilu/cerebellum/models/artist"
+  "github.com/pilu/cerebellum/models/releasegroup"
 )
 
 func ReleaseGroupsHandler(w traffic.ResponseWriter, r *http.Request) {
   artistGid := r.URL.Query().Get("artist_gid")
-  releaseGroups, err := models.FindReleaseGroupsByArtistGid(artistGid)
+
+  if !artist.Exists(artistGid) {
+    w.WriteHeader(http.StatusNotFound)
+    return
+  }
+
+  ReleaseGroups, err := releasegroup.AllByArtistGid(artistGid)
 
   if err == nil {
-    json.NewEncoder(w).Encode(releaseGroups)
+    json.NewEncoder(w).Encode(ReleaseGroups)
   } else if err == sql.ErrNoRows {
     w.WriteHeader(http.StatusNotFound)
   } else if _, ok := err.(models.InvalidUUID); ok {

@@ -15,7 +15,7 @@ func (err InvalidUUID) Error() string {
   return fmt.Sprintf("Invalid UUID: %v", err.UUID)
 }
 
-func isValidUUID(uuid string) bool {
+func IsValidUUID(uuid string) bool {
   return UUIDRegexp.MatchString(uuid)
 }
 

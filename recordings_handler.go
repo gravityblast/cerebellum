@@ -6,6 +6,7 @@ import (
   "database/sql"
   "github.com/pilu/traffic"
   "github.com/pilu/cerebellum/models"
+  "github.com/pilu/cerebellum/models/recording"
 )
 
 func RecordingsHandler(w traffic.ResponseWriter, r *http.Request) {
@@ -16,9 +17,9 @@ func RecordingsHandler(w traffic.ResponseWriter, r *http.Request) {
   var err         error
 
   if artistGid == "" {
-    recordings, err = models.FindRecordingsByReleaseGid(releaseGid)
+    recordings, err = recording.AllByReleaseGid(releaseGid)
   } else {
-    recordings, err = models.FindRecordingsByArtistGidAndReleaseGid(artistGid, releaseGid)
+    recordings, err = recording.AllByArtistGidAndReleaseGid(artistGid, releaseGid)
   }
 
   if err == nil {

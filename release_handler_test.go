@@ -30,7 +30,7 @@ func TestReleaseHandler_WithExistingGidAndWrongArtistGid(t *testing.T) {
   recorder := newTestRequest("GET", "/artists/00000000-0000-0000-0000-000000000000/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5")
 
   body := string(recorder.Body.Bytes())
-  expectedBody := `{"error":"Not Found"}` + "\n"
+  expectedBody := `{"error":"not found"}` + "\n"
 
   assert.Equal(t, expectedBody, body)
   assert.Equal(t, 404, recorder.Code)
@@ -41,7 +41,7 @@ func TestReleaseHandler_WithGidNotFound(t *testing.T) {
   recorder := newTestRequest("GET", "/releases/00000000-0000-0000-0000-000000000000")
 
   body := string(recorder.Body.Bytes())
-  assert.Equal(t, `{"error":"Not Found"}` + "\n", body)
+  assert.Equal(t, `{"error":"not found"}` + "\n", body)
   assert.Equal(t, 404, recorder.Code)
 }
 

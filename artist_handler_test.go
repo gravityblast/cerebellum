@@ -20,7 +20,7 @@ func TestArtistHandler_WithGidNotFound(t *testing.T) {
   recorder := newTestRequest("GET", "/artists/00000000-0000-0000-0000-000000000000")
 
   body := string(recorder.Body.Bytes())
-  assert.Equal(t, `{"error":"Not Found"}` + "\n", body)
+  assert.Equal(t, `{"error":"artist not found"}` + "\n", body)
   assert.Equal(t, 404, recorder.Code)
 }
 
