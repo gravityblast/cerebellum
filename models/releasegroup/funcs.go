@@ -95,3 +95,24 @@ func ByGid(gid string) (*models.ReleaseGroup, error) {
 
   return releaseGroup, err
 }
+
+func ByArtistGidAndGid(artistGid, gid string) (*models.ReleaseGroup, error) {
+  releaseGroup := &models.ReleaseGroup{}
+
+  if !models.IsValidUUID(artistGid) {
+    return releaseGroup, models.InvalidUUID{ artistGid }
+  }
+
+  if !models.IsValidUUID(gid) {
+    return releaseGroup, models.InvalidUUID{ gid }
+  }
+
+  row := models.DB.QueryRow(queryByArtistGidAndGid, artistGid, gid)
+  err := ScanRecord(row, releaseGroup)
+
+  if err == nil {
+    releaseGroup.Artists = artist.AllByArtistCredit(releaseGroup.ArtistCredit)
+  }
+
+  return releaseGroup, err
+}

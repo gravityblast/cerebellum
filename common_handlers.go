@@ -27,3 +27,10 @@ func ArtistNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
   })
 }
 
+func ReleaseGroupNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
+  w.WriteHeader(http.StatusNotFound)
+  json.NewEncoder(w).Encode(map[string]string{
+    "error": "release group not found",
+  })
+}
+

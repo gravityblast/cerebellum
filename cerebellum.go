@@ -39,7 +39,7 @@ func init() {
 
   router.Get("/", RootHandler)
   router.Get("/artists/:gid", ArtistHandler)
-  router.Get("/release-groups/:gid", ReleaseGroupHandler)
+  router.Get("(/artists/:artist_gid)?/release-groups/:gid", ReleaseGroupHandler)
   router.Get("(/artists/:artist_gid)?/releases/:gid", ReleaseHandler)
   router.Get("(/artists/:artist_gid)?/releases/:release_gid/recordings", RecordingsHandler)
   router.Get("/artists/:artist_gid/release-groups", ReleaseGroupsHandler)
