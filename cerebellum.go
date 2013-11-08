@@ -35,6 +35,7 @@ func init() {
 
   router = traffic.New()
   router.NotFoundHandler = NotFoundHandler
+  router.ErrorHandler    = ErrorHandler
   router.AddBeforeFilter(SetDefaultHeaders)
 
   router.Get("/", RootHandler)

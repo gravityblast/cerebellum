@@ -6,6 +6,11 @@ import (
   "github.com/pilu/traffic"
 )
 
+func ErrorHandler(w traffic.ResponseWriter, r *http.Request, err interface{}) {
+  json.NewEncoder(w).Encode(map[string]string{
+    "error": "something went wrong",
+  })
+}
 
 func NotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
   json.NewEncoder(w).Encode(map[string]string{
@@ -34,3 +39,9 @@ func ReleaseGroupNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
   })
 }
 
+func ReleaseNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
+  w.WriteHeader(http.StatusNotFound)
+  json.NewEncoder(w).Encode(map[string]string{
+    "error": "release not found",
+  })
+}

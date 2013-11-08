@@ -20,6 +20,6 @@ func ArtistHandler(w traffic.ResponseWriter, r *http.Request) {
   } else if _, ok := err.(models.InvalidUUID); ok {
     w.WriteHeader(http.StatusBadRequest)
   } else {
-    w.WriteHeader(http.StatusInternalServerError)
+    panic(err)
   }
 }

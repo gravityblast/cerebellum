@@ -6,12 +6,18 @@ import (
   "database/sql"
   "github.com/pilu/traffic"
   "github.com/pilu/cerebellum/models"
+  "github.com/pilu/cerebellum/models/artist"
   "github.com/pilu/cerebellum/models/release"
 )
 
 func ReleaseHandler(w traffic.ResponseWriter, r *http.Request) {
   artistGid := r.URL.Query().Get("artist_gid")
   gid       := r.URL.Query().Get("gid")
+
+  if artistGid != "" && !artist.Exists(artistGid) {
+    ArtistNotFoundHandler(w, r)
+    return
+  }
 
   var Release *models.Release
   var err     error
@@ -25,10 +31,10 @@ func ReleaseHandler(w traffic.ResponseWriter, r *http.Request) {
   if err == nil {
     json.NewEncoder(w).Encode(Release)
   } else if err == sql.ErrNoRows {
-    w.WriteHeader(http.StatusNotFound)
+    ReleaseNotFoundHandler(w, r)
   } else if _, ok := err.(models.InvalidUUID); ok {
     w.WriteHeader(http.StatusBadRequest)
   } else {
-    w.WriteHeader(http.StatusInternalServerError)
+    panic(err)
   }
 }
