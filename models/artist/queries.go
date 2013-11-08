@@ -24,3 +24,15 @@ const queryAllByArtistCredit = `
   WHERE
     ACN.artist_credit = $1;`
 
+const queryHasRelease = `
+  SELECT
+    1
+  FROM
+    release R
+  JOIN artist_credit_name ACN
+    ON R.artist_credit = ACN.artist_credit
+  JOIN artist A
+    ON ACN.artist = A.id
+  WHERE
+    A.gid = $1 AND
+    R.gid = $2;`

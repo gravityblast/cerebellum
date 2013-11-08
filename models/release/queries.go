@@ -12,3 +12,4 @@ const queryByGid = `
   WHERE
     R.gid = $1 limit 1;`
 
+const queryExists = `SELECT 1 FROM release where gid = $1`

@@ -52,3 +52,18 @@ func ByArtistGidAndGid(artistGid, gid string) (*models.Release, error) {
   return release, sql.ErrNoRows
 }
 
+func Exists(gid string) bool {
+  if !models.IsValidUUID(gid) {
+    return false
+  }
+
+  var found int
+
+  row := models.DB.QueryRow(queryExists, gid)
+  err := row.Scan(&found)
+  if err != nil {
+    return false
+  }
+
+  return true
+}

@@ -46,6 +46,6 @@ type Recording struct {
   Name              string           `json:"name"`
   Comment           string           `json:"comment"`
   Length            int              `json:"length"`
-  Artists           []*ReleaseArtist `json:"artists"`
+  Artists           []*ReleaseArtist `json:"artists,omitempty"`
 }
 

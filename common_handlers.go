@@ -4,6 +4,9 @@ import (
   "net/http"
   "encoding/json"
   "github.com/pilu/traffic"
+  "github.com/pilu/cerebellum/models"
+  "github.com/pilu/cerebellum/models/artist"
+  "github.com/pilu/cerebellum/models/release"
 )
 
 func ErrorHandler(w traffic.ResponseWriter, r *http.Request, err interface{}) {
@@ -44,4 +47,54 @@ func ReleaseNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
   json.NewEncoder(w).Encode(map[string]string{
     "error": "release not found",
   })
+}
+
+func CheckArtistFilter(w traffic.ResponseWriter, r *http.Request) bool {
+  artistGid := r.URL.Query().Get("artist_gid")
+  if artistGid == "" {
+    return true
+  }
+
+  if !models.IsValidUUID(artistGid) {
+    w.WriteHeader(http.StatusBadRequest)
+    return false
+  }
+
+  if !artist.Exists(artistGid) {
+    ArtistNotFoundHandler(w, r)
+    return false
+  }
+
+  return true
+}
+
+func CheckReleaseFilter(w traffic.ResponseWriter, r *http.Request) bool {
+  artistGid   := r.URL.Query().Get("artist_gid")
+  releaseGid  := r.URL.Query().Get("release_gid")
+
+  if !models.IsValidUUID(releaseGid) {
+    w.WriteHeader(http.StatusBadRequest)
+    return false
+  }
+
+  if artistGid != "" {
+    if !models.IsValidUUID(artistGid) {
+      w.WriteHeader(http.StatusBadRequest)
+      return false
+    }
+
+    if artist.HasRelease(artistGid, releaseGid) {
+      return true
+    }
+
+    ReleaseNotFoundHandler(w, r)
+    return false
+  }
+
+  if !release.Exists(releaseGid) {
+    ReleaseNotFoundHandler(w, r)
+    return false
+  }
+
+  return true
 }

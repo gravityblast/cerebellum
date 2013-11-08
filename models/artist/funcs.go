@@ -100,3 +100,23 @@ func Exists(gid string) bool {
 
   return true
 }
+
+func HasRelease(artistGid, releaseGid string) bool {
+  if !models.IsValidUUID(artistGid) {
+    return false
+  }
+
+  if !models.IsValidUUID(releaseGid) {
+    return false
+  }
+
+  var found int
+
+  row := models.DB.QueryRow(queryHasRelease, artistGid, releaseGid)
+  err := row.Scan(&found)
+  if err != nil {
+    return false
+  }
+
+  return true
+}

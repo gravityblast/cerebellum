@@ -42,7 +42,9 @@ func init() {
   router.Get("/artists/:gid", ArtistHandler)
   router.Get("(/artists/:artist_gid)?/release-groups/:gid", ReleaseGroupHandler)
   router.Get("(/artists/:artist_gid)?/releases/:gid", ReleaseHandler)
-  router.Get("(/artists/:artist_gid)?/releases/:release_gid/recordings", RecordingsHandler)
+  router.Get("(/artists/:artist_gid)?/releases/:release_gid/recordings", RecordingsHandler).
+    AddBeforeFilter(CheckArtistFilter).
+    AddBeforeFilter(CheckReleaseFilter)
   router.Get("/artists/:artist_gid/release-groups", ReleaseGroupsHandler)
   router.Get("/recordings/:gid", RecordingHandler)
 }

@@ -2,7 +2,7 @@ package recording
 
 const queryAllByReleaseGid = `
   SELECT
-    REC.gid, REC.name, REC.comment, REC.length, REL.artist_credit
+    REC.gid, REC.name, REC.comment, REC.length
   FROM
     recording REC
   JOIN  track T
