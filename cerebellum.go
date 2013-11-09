@@ -69,7 +69,9 @@ func init() {
   // Recordings:
   //   /recordings/0c871a4a-efdf-47f8-98c2-cc277f806d2f
   //   /releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/0c871a4a-efdf-47f8-98c2-cc277f806d2f
-  router.Get("(/releases/:release_gid)?/recordings/:gid", RecordingHandler).
+  //   /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/833f00e1-781f-4edd-90e4-e52712618862
+  router.Get("((/artists/:artist_gid)?/releases/:release_gid)?/recordings/:gid", RecordingHandler).
+    AddBeforeFilter(CheckArtistFilter).
     AddBeforeFilter(CheckReleaseFilter)
 }
 

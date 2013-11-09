@@ -53,3 +53,45 @@ func TestRecordingHandler_WithWrongReleaseGidAndExistingRecordingGid(t *testing.
   assert.Equal(t, 404, recorder.Code)
 }
 
+func TestRecordingHandler_WithExistingReleaseGidAndRecordingGid(t *testing.T) {
+  recorder := newTestRequest("GET", "/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/833f00e1-781f-4edd-90e4-e52712618862")
+
+  body := string(recorder.Body.Bytes())
+  expectedBody := `{"gid":"833f00e1-781f-4edd-90e4-e52712618862","name":"Get Lucky","comment":"","length":367000,"artists":[{"gid":"056e4f3e-d505-4dad-8ec1-d04f521cbb56","name":"Daft Punk"},{"gid":"149f91ef-1287-46da-9a8e-87fee02f1471","name":"Pharrell Williams"}]}` + "\n"
+
+  assert.Equal(t, expectedBody, body)
+  assert.Equal(t, 200, recorder.Code)
+}
+
+func TestRecordingHandler_WithNonExistingArtistGidAndExistingReleaseGidAndRecordingGid(t *testing.T) {
+  recorder := newTestRequest("GET", "/artists/00000000-0000-0000-0000-000000000000/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/833f00e1-781f-4edd-90e4-e52712618862")
+
+  body := string(recorder.Body.Bytes())
+  expectedBody := `{"error":"artist not found"}` + "\n"
+
+  assert.Equal(t, expectedBody, body)
+  assert.Equal(t, 404, recorder.Code)
+}
+
+func TestRecordingHandler_WithWrongArtistGidAndExistingReleaseGidAndRecordingGid(t *testing.T) {
+  // Artist is Guns'n'Roses but release is "Random Access Memories" by Daft Punk
+  recorder := newTestRequest("GET", "/artists/eeb1195b-f213-4ce1-b28c-8565211f8e43/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/833f00e1-781f-4edd-90e4-e52712618862")
+
+  body := string(recorder.Body.Bytes())
+  expectedBody := `{"error":"release not found"}` + "\n"
+
+  assert.Equal(t, expectedBody, body)
+  assert.Equal(t, 404, recorder.Code)
+}
+
+func TestRecordingHandler_WithExistingArtistGidAndReleaseGidAndRecordingGid(t *testing.T) {
+  recorder := newTestRequest("GET", "/artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/833f00e1-781f-4edd-90e4-e52712618862")
+
+  body := string(recorder.Body.Bytes())
+  expectedBody := `{"gid":"833f00e1-781f-4edd-90e4-e52712618862","name":"Get Lucky","comment":"","length":367000,"artists":[{"gid":"056e4f3e-d505-4dad-8ec1-d04f521cbb56","name":"Daft Punk"},{"gid":"149f91ef-1287-46da-9a8e-87fee02f1471","name":"Pharrell Williams"}]}` + "\n"
+
+  assert.Equal(t, expectedBody, body)
+  assert.Equal(t, 200, recorder.Code)
+}
+
+
