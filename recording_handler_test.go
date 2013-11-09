@@ -6,7 +6,7 @@ import (
 )
 
 
-func TestRecordingHandler_WithExistingGid(t *testing.T) {
+func TestRecordingHandler_WithExistingRecordingGid(t *testing.T) {
   recorder := newTestRequest("GET", "/recordings/833f00e1-781f-4edd-90e4-e52712618862")
 
   body := string(recorder.Body.Bytes())
@@ -16,18 +16,40 @@ func TestRecordingHandler_WithExistingGid(t *testing.T) {
   assert.Equal(t, 200, recorder.Code)
 }
 
-func TestRecordingHandler_WithGidNotFound(t *testing.T) {
+func TestRecordingHandler_WithRecordingGidNotFound(t *testing.T) {
   recorder := newTestRequest("GET", "/recordings/00000000-0000-0000-0000-000000000000")
 
   body := string(recorder.Body.Bytes())
-  assert.Equal(t, `{"error":"not found"}` + "\n", body)
+  assert.Equal(t, `{"error":"recording not found"}` + "\n", body)
   assert.Equal(t, 404, recorder.Code)
 }
 
-func TestRecordingHandler_WithInvalidUUID(t *testing.T) {
+func TestRecordingHandler_WithInvalidRecordingGid(t *testing.T) {
   recorder := newTestRequest("GET", "/recordings/bad-uuid")
 
   body := string(recorder.Body.Bytes())
   assert.Equal(t, "", body)
   assert.Equal(t, 400, recorder.Code)
 }
+
+func TestRecordingHandler_WithNonExistingReleaseGidAndExistingRecordingGid(t *testing.T) {
+  recorder := newTestRequest("GET", "/releases/00000000-0000-0000-0000-000000000000/recordings/833f00e1-781f-4edd-90e4-e52712618862")
+
+  body := string(recorder.Body.Bytes())
+  expectedBody := `{"error":"release not found"}` + "\n"
+
+  assert.Equal(t, expectedBody, body)
+  assert.Equal(t, 404, recorder.Code)
+}
+
+func TestRecordingHandler_WithWrongReleaseGidAndExistingRecordingGid(t *testing.T) {
+  // Release is "Harder, Better, Faster, Stronger" but recording is "Get Lucky" which is in "Random Access Memories"
+  recorder := newTestRequest("GET", "/releases/e1ed2270-c44f-4c72-8836-140579b211fa/recordings/833f00e1-781f-4edd-90e4-e52712618862")
+
+  body := string(recorder.Body.Bytes())
+  expectedBody := `{"error":"recording not found"}` + "\n"
+
+  assert.Equal(t, expectedBody, body)
+  assert.Equal(t, 404, recorder.Code)
+}
+

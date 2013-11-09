@@ -49,6 +49,13 @@ func ReleaseNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
   })
 }
 
+func RecordingNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
+  w.WriteHeader(http.StatusNotFound)
+  json.NewEncoder(w).Encode(map[string]string{
+    "error": "recording not found",
+  })
+}
+
 func CheckArtistFilter(w traffic.ResponseWriter, r *http.Request) bool {
   artistGid := r.URL.Query().Get("artist_gid")
   if artistGid == "" {
@@ -71,6 +78,10 @@ func CheckArtistFilter(w traffic.ResponseWriter, r *http.Request) bool {
 func CheckReleaseFilter(w traffic.ResponseWriter, r *http.Request) bool {
   artistGid   := r.URL.Query().Get("artist_gid")
   releaseGid  := r.URL.Query().Get("release_gid")
+
+  if releaseGid == "" {
+    return true
+  }
 
   if !models.IsValidUUID(releaseGid) {
     w.WriteHeader(http.StatusBadRequest)

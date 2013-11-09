@@ -23,3 +23,18 @@ const queryByGid = `
   WHERE
     R.gid = $1 limit 1;`
 
+const queryByReleaseGidAndGid = `
+  SELECT
+    REC.gid, REC.name, REC.comment, REC.length, REC.artist_credit
+  FROM
+    recording REC
+  JOIN track T
+    ON REC.id = T.recording
+  JOIN medium M
+    ON T.medium = M.id
+  JOIN release REL
+    ON M.release = REL.id
+  WHERE
+    REL.gid = $1 AND
+    REC.gid = $2 limit 1;`
+

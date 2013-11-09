@@ -19,7 +19,7 @@ func TestRecordingsHandler_WithReleaseGidNotFound(t *testing.T) {
   assert.Equal(t, 404, recorder.Code)
 }
 
-func TestRecordingsHandler_WithInvalidUUID(t *testing.T) {
+func TestRecordingsHandler_WithInvalidReleaseGid(t *testing.T) {
   recorder := newTestRequest("GET", "/releases/bad-uuid/recordings")
 
   body := string(recorder.Body.Bytes())

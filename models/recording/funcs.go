@@ -50,3 +50,28 @@ func ByGid(gid string) (*models.Recording, error) {
 
   return recording, nil
 }
+
+func ByReleaseGidAndGid(releaseGid, gid string) (*models.Recording, error) {
+  recording := &models.Recording{}
+
+  if !models.IsValidUUID(releaseGid) {
+    return recording, models.InvalidUUID{ releaseGid }
+  }
+
+  if !models.IsValidUUID(gid) {
+    return recording, models.InvalidUUID{ gid }
+  }
+
+  var artistCredit int
+
+  row := models.DB.QueryRow(queryByReleaseGidAndGid, releaseGid, gid)
+  err := row.Scan(&recording.Gid, &recording.Name, &recording.Comment, &recording.Length, &artistCredit)
+
+  if err != nil {
+    return recording, err
+  }
+
+  recording.Artists = artist.AllByArtistCredit(artistCredit)
+
+  return recording, nil
+}
