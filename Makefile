@@ -1,9 +1,7 @@
-DB="user=musicbrainz dbname=musicbrainz host=127.0.0.1 sslmode=disable"
-
 GO_CMD=go
-GO_TEST=TRAFFIC_ENV=test DB=$(DB) $(GO_CMD) test ./...
+GO_TEST=TRAFFIC_CONFIG_FILE=traffic.conf.sample TRAFFIC_ENV=test $(GO_CMD) test ./...
 GO_BUILD=$(GO_CMD) build -v
-RUN=DB=$(DB) ./cerebellum
+RUN=./cerebellum
 
 all: build
 test: RunTests

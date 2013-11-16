@@ -1,0 +1,21 @@
+[development]
+database.user:    musicbrainz
+database.name:    musicbrainz
+database.host:    127.0.0.1
+database.sslmode: disable
+database.pass:
+
+[test]
+database.user:    musicbrainz
+database.name:    musicbrainz
+database.host:    127.0.0.1
+database.sslmode: disable
+database.pass:
+
+[production]
+database.user:    musicbrainz
+database.name:    musicbrainz
+database.host:    127.0.0.1
+database.sslmode: disable
+database.pass:
+

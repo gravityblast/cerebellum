@@ -1,7 +1,7 @@
 package main
 
 import (
-  "os"
+  "fmt"
   "database/sql"
   _ "github.com/bmizerany/pq"
   "github.com/pilu/traffic"
@@ -17,7 +17,16 @@ var (
 
 func initDatabase() {
   var err error
-  DB, err = sql.Open("postgres", os.Getenv("DB"))
+
+  dbUser    := traffic.GetVar("database.user")
+  dbName    := traffic.GetVar("database.name")
+  dbHost    := traffic.GetVar("database.host")
+  dbPass    := traffic.GetVar("database.pass")
+  dbSSLMode := traffic.GetVar("database.sslmode")
+
+  dbString := fmt.Sprintf("user=%s dbname=%s host=%s password=%s sslmode=%s", dbUser, dbName, dbHost, dbPass, dbSSLMode)
+
+  DB, err = sql.Open("postgres", dbString)
   if err != nil {
     panic(err)
   }
