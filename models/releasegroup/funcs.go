@@ -1,7 +1,6 @@
 package releasegroup
 
 import (
-  "fmt"
   "database/sql"
   "github.com/pilu/cerebellum/models"
   "github.com/pilu/cerebellum/models/artist"
@@ -24,7 +23,7 @@ func ScanRecord(scanner Scanner, releaseGroup *models.ReleaseGroup) error {
     return err
   }
 
-  date := firstReleaseDate(firstReleaseDateYear, firstReleaseDateMonth, firstReleaseDateDay)
+  date := models.DatesToString(firstReleaseDateYear, firstReleaseDateMonth, firstReleaseDateDay)
   if date != "" {
     releaseGroup.FirstReleaseDate = date
   }
@@ -34,25 +33,6 @@ func ScanRecord(scanner Scanner, releaseGroup *models.ReleaseGroup) error {
   }
 
   return nil
-}
-
-
-func firstReleaseDate(year, month, day *sql.NullInt64) string {
-  var date string
-
-  if year != nil {
-    date = fmt.Sprintf("%d", year.Int64)
-
-    if month != nil {
-      date = fmt.Sprintf("%s-%02d", date, month.Int64)
-    }
-
-    if day != nil {
-      date = fmt.Sprintf("%s-%02d", date, day.Int64)
-    }
-  }
-
-  return date
 }
 
 func AllByArtistGid(artistGid string) ([]*models.ReleaseGroup, error) {

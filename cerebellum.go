@@ -72,7 +72,7 @@ func init() {
 
   // Releases:
   //   /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases
-  router.Get("/artists/:artist_gid/releases/:gid/?", ReleaseHandler).
+  router.Get("/artists/:artist_gid/releases/?", ReleasesHandler).
     AddBeforeFilter(CheckArtistFilter)
 
   // Recordings:

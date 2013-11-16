@@ -35,9 +35,11 @@ type Release struct {
   Gid               string           `json:"gid"`
   Name              string           `json:"name"`
   Comment           string           `json:"comment"`
+  Date              string           `json:"date,omitempty"`
   Status            string           `json:"status"`
+  Type              string           `json:"type,omitempty"`
   Packaging         string           `json:"packaging"`
-  Artists           []*ReleaseArtist `json:"artists"`
+  Artists           []*ReleaseArtist `json:"artists,omitempty"`
 }
 
 
