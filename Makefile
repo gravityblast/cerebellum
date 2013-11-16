@@ -1,7 +1,8 @@
+ENV=TRAFFIC_CONFIG_FILE=traffic.conf.sample
 GO_CMD=go
-GO_TEST=TRAFFIC_CONFIG_FILE=traffic.conf.sample TRAFFIC_ENV=test $(GO_CMD) test ./...
+GO_TEST= $(ENV) TRAFFIC_ENV=test $(GO_CMD) test ./...
 GO_BUILD=$(GO_CMD) build -v
-RUN=./cerebellum
+RUN=$(ENV) ./cerebellum
 
 all: build
 test: RunTests
