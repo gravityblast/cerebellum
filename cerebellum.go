@@ -49,6 +49,12 @@ func init() {
   router.Get("(/artists/:artist_gid)?/release-groups/:gid/?", ReleaseGroupHandler).
     AddBeforeFilter(CheckArtistFilter)
 
+  // Release Groups:
+  //   /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/release-groups
+  router.Get("/artists/:artist_gid/release-groups/?", ReleaseGroupsHandler).
+    AddBeforeFilter(CheckArtistFilter)
+
+
   // Release:
   //   /releases/79215cdf-4764-4dee-b0b9-fec1643df7c5
   //   /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5
@@ -60,11 +66,6 @@ func init() {
   router.Get("(/artists/:artist_gid)?/releases/:release_gid/recordings/?", RecordingsHandler).
     AddBeforeFilter(CheckArtistFilter).
     AddBeforeFilter(CheckReleaseFilter)
-
-  // Release Groups:
-  //   /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/release-groups
-  router.Get("/artists/:artist_gid/release-groups/?", ReleaseGroupsHandler).
-    AddBeforeFilter(CheckArtistFilter)
 
   // Recordings:
   //   /recordings/0c871a4a-efdf-47f8-98c2-cc277f806d2f
