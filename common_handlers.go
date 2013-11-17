@@ -22,11 +22,9 @@ func NotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
   })
 }
 
-func SetDefaultHeaders(w traffic.ResponseWriter, r *http.Request) bool {
+func SetDefaultHeaders(w traffic.ResponseWriter, r *http.Request) {
   w.Header().Set("Cerebellum-Version", VERSION)
   w.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-  return true
 }
 
 func ArtistNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
@@ -57,91 +55,85 @@ func RecordingNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
   })
 }
 
-func CheckArtistFilter(w traffic.ResponseWriter, r *http.Request) bool {
+func CheckArtistFilter(w traffic.ResponseWriter, r *http.Request) {
   artistGid := r.URL.Query().Get("artist_gid")
   if artistGid == "" {
-    return true
+    return
   }
 
   if !models.IsValidUUID(artistGid) {
     w.WriteHeader(http.StatusBadRequest)
-    return false
+    return
   }
 
   if !artist.Exists(artistGid) {
     ArtistNotFoundHandler(w, r)
-    return false
+    return
   }
-
-  return true
 }
 
-func CheckReleaseFilter(w traffic.ResponseWriter, r *http.Request) bool {
+func CheckReleaseFilter(w traffic.ResponseWriter, r *http.Request) {
   artistGid   := r.URL.Query().Get("artist_gid")
   releaseGid  := r.URL.Query().Get("release_gid")
 
   if releaseGid == "" {
-    return true
+    return
   }
 
   if !models.IsValidUUID(releaseGid) {
     w.WriteHeader(http.StatusBadRequest)
-    return false
+    return
   }
 
   if artistGid != "" {
     if !models.IsValidUUID(artistGid) {
       w.WriteHeader(http.StatusBadRequest)
-      return false
+      return
     }
 
     if artist.HasRelease(artistGid, releaseGid) {
-      return true
+      return
     }
 
     ReleaseNotFoundHandler(w, r)
-    return false
+    return
   }
 
   if !release.Exists(releaseGid) {
     ReleaseNotFoundHandler(w, r)
-    return false
+    return
   }
-
-  return true
 }
 
-func CheckReleaseGroupFilter(w traffic.ResponseWriter, r *http.Request) bool {
+func CheckReleaseGroupFilter(w traffic.ResponseWriter, r *http.Request) {
   artistGid       := r.URL.Query().Get("artist_gid")
   releaseGroupGid := r.URL.Query().Get("release_group_gid")
 
   if releaseGroupGid == "" {
-    return true
+    return
   }
 
   if !models.IsValidUUID(releaseGroupGid) {
     w.WriteHeader(http.StatusBadRequest)
-    return false
+    return
   }
 
   if artistGid != "" {
     if !models.IsValidUUID(artistGid) {
       w.WriteHeader(http.StatusBadRequest)
-      return false
+      return
     }
 
     if artist.HasReleaseGroup(artistGid, releaseGroupGid) {
-      return true
+      return
     }
 
     ReleaseGroupNotFoundHandler(w, r)
-    return false
+    return
   }
 
   if !releasegroup.Exists(releaseGroupGid) {
     ReleaseGroupNotFoundHandler(w, r)
-    return false
+    return
   }
-
-  return true
 }
