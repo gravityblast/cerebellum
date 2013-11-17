@@ -120,3 +120,23 @@ func HasRelease(artistGid, releaseGid string) bool {
 
   return true
 }
+
+func HasReleaseGroup(artistGid, releaseGroupGid string) bool {
+  if !models.IsValidUUID(artistGid) {
+    return false
+  }
+
+  if !models.IsValidUUID(releaseGroupGid) {
+    return false
+  }
+
+  var found int
+
+  row := models.DB.QueryRow(queryHasReleaseGroup, artistGid, releaseGroupGid)
+  err := row.Scan(&found)
+  if err != nil {
+    return false
+  }
+
+  return true
+}

@@ -10,12 +10,17 @@ import (
 )
 
 func ReleasesHandler(w traffic.ResponseWriter, r *http.Request) {
-  artistGid := r.URL.Query().Get("artist_gid")
+  artistGid       := r.URL.Query().Get("artist_gid")
+  releaseGroupGid := r.URL.Query().Get("release_group_gid")
 
   var releases []*models.Release
   var err     error
 
-  releases, err = release.AllByArtistGid(artistGid)
+  if releaseGroupGid == "" {
+    releases, err = release.AllByArtistGid(artistGid)
+  } else {
+    releases, err = release.AllByReleaseGroupGid(releaseGroupGid)
+  }
 
   if err == nil {
     json.NewEncoder(w).Encode(releases)

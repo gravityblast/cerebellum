@@ -15,10 +15,11 @@ func ByGid(gid string) (*models.Release, error) {
 
   var status        *sql.NullString
   var packaging     *sql.NullString
+  var _type        *sql.NullString
   var artistCredit  int
 
   row := models.DB.QueryRow(queryByGid, gid)
-  err := row.Scan(&release.Gid, &release.Name, &release.Comment, &artistCredit, &status, &packaging)
+  err := row.Scan(&release.Gid, &release.Name, &release.Comment, &artistCredit, &status, &packaging, &_type)
 
   if err != nil {
     return release, err
@@ -30,6 +31,10 @@ func ByGid(gid string) (*models.Release, error) {
 
   if packaging != nil {
     release.Packaging = packaging.String
+  }
+
+  if _type != nil {
+    release.Type = _type.String
   }
 
   release.Artists = artist.AllByArtistCredit(artistCredit)
@@ -89,6 +94,43 @@ func AllByArtistGid(artistGid string) ([]*models.Release, error) {
     date := models.DatesToString(dateYear, dateMonth, dateDay)
     if date != "" {
       release.Date = date
+    }
+
+    releases = append(releases, release)
+  }
+
+  return releases, nil
+}
+
+func AllByReleaseGroupGid(releaseGroupGid string) ([]*models.Release, error) {
+  releases  := make([]*models.Release, 0)
+  rows, err := models.DB.Query(queryAllByReleaseGroupGid, releaseGroupGid)
+  if err != nil {
+    return releases, err
+  }
+
+  for rows.Next() {
+    release := &models.Release{}
+
+    var status    *sql.NullString
+    var _type     *sql.NullString
+    var packaging *sql.NullString
+
+    err := rows.Scan(&release.Gid, &release.Name, &release.Comment, &status, &_type, &packaging)
+    if err != nil {
+      return releases, err
+    }
+
+    if status != nil {
+      release.Status = status.String
+    }
+
+    if _type != nil {
+      release.Type = _type.String
+    }
+
+    if packaging != nil {
+      release.Packaging = packaging.String
     }
 
     releases = append(releases, release)

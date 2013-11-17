@@ -51,3 +51,4 @@ const queryByArtistGidAndGid = `
     A.gid = $1 AND
     RG.gid = $2 limit 1;`
 
+const queryExists = `SELECT 1 FROM release_group where gid = $1`

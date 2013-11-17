@@ -36,3 +36,16 @@ const queryHasRelease = `
   WHERE
     A.gid = $1 AND
     R.gid = $2;`
+
+const queryHasReleaseGroup = `
+  SELECT
+    1
+  FROM
+    release_group RG
+  JOIN artist_credit_name ACN
+    ON RG.artist_credit = ACN.artist_credit
+  JOIN artist A
+    ON ACN.artist = A.id
+  WHERE
+    A.gid = $1 AND
+    RG.gid = $2;`

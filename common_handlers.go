@@ -7,6 +7,7 @@ import (
   "github.com/pilu/cerebellum/models"
   "github.com/pilu/cerebellum/models/artist"
   "github.com/pilu/cerebellum/models/release"
+  "github.com/pilu/cerebellum/models/releasegroup"
 )
 
 func ErrorHandler(w traffic.ResponseWriter, r *http.Request, err interface{}) {
@@ -104,6 +105,41 @@ func CheckReleaseFilter(w traffic.ResponseWriter, r *http.Request) bool {
 
   if !release.Exists(releaseGid) {
     ReleaseNotFoundHandler(w, r)
+    return false
+  }
+
+  return true
+}
+
+func CheckReleaseGroupFilter(w traffic.ResponseWriter, r *http.Request) bool {
+  artistGid       := r.URL.Query().Get("artist_gid")
+  releaseGroupGid := r.URL.Query().Get("release_group_gid")
+
+  if releaseGroupGid == "" {
+    return true
+  }
+
+  if !models.IsValidUUID(releaseGroupGid) {
+    w.WriteHeader(http.StatusBadRequest)
+    return false
+  }
+
+  if artistGid != "" {
+    if !models.IsValidUUID(artistGid) {
+      w.WriteHeader(http.StatusBadRequest)
+      return false
+    }
+
+    if artist.HasReleaseGroup(artistGid, releaseGroupGid) {
+      return true
+    }
+
+    ReleaseGroupNotFoundHandler(w, r)
+    return false
+  }
+
+  if !releasegroup.Exists(releaseGroupGid) {
+    ReleaseGroupNotFoundHandler(w, r)
     return false
   }
 

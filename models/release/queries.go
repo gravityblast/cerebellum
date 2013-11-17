@@ -2,9 +2,13 @@ package release
 
 const queryByGid = `
   SELECT
-    R.gid, R.name, R.comment, R.artist_credit, RS.name, RP.name
+    R.gid, R.name, R.comment, R.artist_credit, RS.name, RP.name, RGPT.name as type
   FROM
     release R
+  JOIN release_group RG
+    ON R.release_group = RG.id
+  LEFT JOIN release_group_primary_type RGPT
+    ON RG.type = RGPT.id
   LEFT JOIN release_status RS
     ON R.status = RS.id
   LEFT JOIN release_packaging RP
@@ -47,3 +51,19 @@ const queryAllByArtistGid = `
       release_row_number, RC.date_year, RC.date_month, RC.date_day
   ) RELEASES
   WHERE RELEASES.release_row_number = 1;`
+
+const queryAllByReleaseGroupGid = `
+  SELECT
+    R.gid, R.name, R.comment, RS.name as status, RGPT.name as type, RP.name as packaging
+  FROM
+    release R
+  JOIN release_group RG
+    ON R.release_group = RG.id
+  LEFT JOIN release_status RS
+    ON R.status = RS.id
+  LEFT JOIN release_group_primary_type RGPT
+    ON RG.type = RGPT.id
+  LEFT JOIN release_packaging RP
+    ON R.packaging = RP.id
+  WHERE
+    RG.gid = $1;`
