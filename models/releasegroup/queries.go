@@ -16,7 +16,9 @@ const queryAllByArtistGid = `
   LEFT JOIN release_group_meta RGM
     ON RG.id = RGM.id
   WHERE
-    A.gid = $1;`
+    A.gid = $1
+  ORDER BY
+    RGM.first_release_date_year, RGM.first_release_date_month, RGM.first_release_date_day;`
 
 const queryByGid = `
   SELECT
