@@ -9,7 +9,7 @@ import (
   "github.com/pilu/cerebellum/models/recording"
 )
 
-func RecordingHandler(w traffic.ResponseWriter, r *http.Request) {
+func RecordingHandler(w traffic.ResponseWriter, r *traffic.Request) {
   releaseGid := r.URL.Query().Get("release_gid")
   gid        := r.URL.Query().Get("gid")
 

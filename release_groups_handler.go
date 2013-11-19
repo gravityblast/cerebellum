@@ -9,7 +9,7 @@ import (
   "github.com/pilu/cerebellum/models/releasegroup"
 )
 
-func ReleaseGroupsHandler(w traffic.ResponseWriter, r *http.Request) {
+func ReleaseGroupsHandler(w traffic.ResponseWriter, r *traffic.Request) {
   artistGid := r.URL.Query().Get("artist_gid")
 
   ReleaseGroups, err := releasegroup.AllByArtistGid(artistGid)

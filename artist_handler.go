@@ -9,7 +9,7 @@ import (
   "github.com/pilu/cerebellum/models/artist"
 )
 
-func ArtistHandler(w traffic.ResponseWriter, r *http.Request) {
+func ArtistHandler(w traffic.ResponseWriter, r *traffic.Request) {
   gid := r.URL.Query().Get("gid")
   Artist, err := artist.ByGid(gid)
 

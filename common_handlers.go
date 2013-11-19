@@ -10,52 +10,52 @@ import (
   "github.com/pilu/cerebellum/models/releasegroup"
 )
 
-func ErrorHandler(w traffic.ResponseWriter, r *http.Request, err interface{}) {
+func ErrorHandler(w traffic.ResponseWriter, r *traffic.Request, err interface{}) {
   json.NewEncoder(w).Encode(map[string]string{
     "error": "something went wrong",
   })
 }
 
-func NotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
+func NotFoundHandler(w traffic.ResponseWriter, r *traffic.Request) {
   json.NewEncoder(w).Encode(map[string]string{
     "error": "not found",
   })
 }
 
-func SetDefaultHeaders(w traffic.ResponseWriter, r *http.Request) {
+func SetDefaultHeaders(w traffic.ResponseWriter, r *traffic.Request) {
   w.Header().Set("Cerebellum-Version", VERSION)
   w.Header().Set("Content-Type", "application/json; charset=utf-8")
 }
 
-func ArtistNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
+func ArtistNotFoundHandler(w traffic.ResponseWriter, r *traffic.Request) {
   w.WriteHeader(http.StatusNotFound)
   json.NewEncoder(w).Encode(map[string]string{
     "error": "artist not found",
   })
 }
 
-func ReleaseGroupNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
+func ReleaseGroupNotFoundHandler(w traffic.ResponseWriter, r *traffic.Request) {
   w.WriteHeader(http.StatusNotFound)
   json.NewEncoder(w).Encode(map[string]string{
     "error": "release group not found",
   })
 }
 
-func ReleaseNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
+func ReleaseNotFoundHandler(w traffic.ResponseWriter, r *traffic.Request) {
   w.WriteHeader(http.StatusNotFound)
   json.NewEncoder(w).Encode(map[string]string{
     "error": "release not found",
   })
 }
 
-func RecordingNotFoundHandler(w traffic.ResponseWriter, r *http.Request) {
+func RecordingNotFoundHandler(w traffic.ResponseWriter, r *traffic.Request) {
   w.WriteHeader(http.StatusNotFound)
   json.NewEncoder(w).Encode(map[string]string{
     "error": "recording not found",
   })
 }
 
-func CheckArtistFilter(w traffic.ResponseWriter, r *http.Request) {
+func CheckArtistFilter(w traffic.ResponseWriter, r *traffic.Request) {
   artistGid := r.URL.Query().Get("artist_gid")
   if artistGid == "" {
     return
@@ -72,7 +72,7 @@ func CheckArtistFilter(w traffic.ResponseWriter, r *http.Request) {
   }
 }
 
-func CheckReleaseFilter(w traffic.ResponseWriter, r *http.Request) {
+func CheckReleaseFilter(w traffic.ResponseWriter, r *traffic.Request) {
   artistGid   := r.URL.Query().Get("artist_gid")
   releaseGid  := r.URL.Query().Get("release_gid")
 
@@ -105,7 +105,7 @@ func CheckReleaseFilter(w traffic.ResponseWriter, r *http.Request) {
   }
 }
 
-func CheckReleaseGroupFilter(w traffic.ResponseWriter, r *http.Request) {
+func CheckReleaseGroupFilter(w traffic.ResponseWriter, r *traffic.Request) {
   artistGid       := r.URL.Query().Get("artist_gid")
   releaseGroupGid := r.URL.Query().Get("release_group_gid")
 

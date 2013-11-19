@@ -9,7 +9,7 @@ import (
   "github.com/pilu/cerebellum/models/release"
 )
 
-func ReleaseHandler(w traffic.ResponseWriter, r *http.Request) {
+func ReleaseHandler(w traffic.ResponseWriter, r *traffic.Request) {
   artistGid := r.URL.Query().Get("artist_gid")
   gid       := r.URL.Query().Get("gid")
 
