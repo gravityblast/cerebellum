@@ -21,7 +21,7 @@ Copy the config file sample to another location
 
 ###Artist:
 
-    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56
+    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56.json
 
 Response:
 
@@ -37,7 +37,7 @@ Response:
 
 ###Artist Release Groups:
 
-    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/release-groups
+    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/release-groups.json
 
 Response:
 
@@ -53,7 +53,7 @@ Response:
 
 ###Artist Release Group:
 
-    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/release-groups/aa997ea0-2936-40bd-884d-3af8a0e064dc
+    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/release-groups/aa997ea0-2936-40bd-884d-3af8a0e064dc.json
 
 Response:
 
@@ -73,7 +73,7 @@ Response:
 
 ###Artist Releases (first release for each release group):
 
-    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases
+    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases.json
 
 Response:
 
@@ -100,7 +100,7 @@ Response:
 
 ###Artist Release:
 
-    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5
+    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5.json
 
 Response:
 
@@ -121,7 +121,7 @@ Response:
 
 ###Artist Releases by Release Group:
 
-    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/release-groups/aa997ea0-2936-40bd-884d-3af8a0e064dc/releases
+    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/release-groups/aa997ea0-2936-40bd-884d-3af8a0e064dc/releases.json
 
 Response:
 
@@ -146,7 +146,7 @@ Response:
 
 ###Artist Release Recordings:
 
-    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings
+    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings.json
 
 Response:
 
@@ -167,7 +167,7 @@ Response:
 
 ###Artist Release Recording:
 
-    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/833f00e1-781f-4edd-90e4-e52712618862
+    /artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56/releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/833f00e1-781f-4edd-90e4-e52712618862.json
 
 Response:
 
@@ -190,7 +190,7 @@ Response:
 
 ###Release Group:
 
-    /release-groups/aa997ea0-2936-40bd-884d-3af8a0e064dc
+    /release-groups/aa997ea0-2936-40bd-884d-3af8a0e064dc.json
 
 Response:
 
@@ -210,7 +210,7 @@ Response:
 
 ###Release Group - Release:
 
-    /release-groups/aa997ea0-2936-40bd-884d-3af8a0e064dc/releases
+    /release-groups/aa997ea0-2936-40bd-884d-3af8a0e064dc/releases.json
 
 Response:
 
@@ -236,7 +236,7 @@ Response:
 
 ###Release:
 
-    /releases/79215cdf-4764-4dee-b0b9-fec1643df7c5
+    /releases/79215cdf-4764-4dee-b0b9-fec1643df7c5.json
 
 Response:
 
@@ -257,7 +257,7 @@ Response:
 
 ###Release Recordings:
 
-    /releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings
+    /releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings.json
 
 Response:
 
@@ -278,7 +278,7 @@ Response:
 
 ###Recording:
 
-    /recordings/0c871a4a-efdf-47f8-98c2-cc277f806d2f
+    /recordings/0c871a4a-efdf-47f8-98c2-cc277f806d2f.json
 
 Response:
 
@@ -297,7 +297,7 @@ Response:
 
 ###Release Recording:
 
-    /releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/0c871a4a-efdf-47f8-98c2-cc277f806d2f
+    /releases/79215cdf-4764-4dee-b0b9-fec1643df7c5/recordings/0c871a4a-efdf-47f8-98c2-cc277f806d2f.json
 
 Response:
 
