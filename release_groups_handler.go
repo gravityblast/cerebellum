@@ -10,9 +10,9 @@ import (
 )
 
 func ReleaseGroupsHandler(w traffic.ResponseWriter, r *traffic.Request) {
-  artistGid := r.URL.Query().Get("artist_gid")
+  artistId := r.URL.Query().Get("artist_id")
 
-  ReleaseGroups, err := releasegroup.AllByArtistGid(artistGid)
+  ReleaseGroups, err := releasegroup.AllByArtistId(artistId)
 
   if err == nil {
     json.NewEncoder(w).Encode(ReleaseGroups)

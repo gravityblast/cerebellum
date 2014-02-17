@@ -10,16 +10,16 @@ import (
 )
 
 func RecordingHandler(w traffic.ResponseWriter, r *traffic.Request) {
-  releaseGid := r.URL.Query().Get("release_gid")
-  gid        := r.URL.Query().Get("gid")
+  releaseId := r.URL.Query().Get("release_id")
+  id        := r.URL.Query().Get("id")
 
   var Recording *models.Recording
   var err       error
 
-  if releaseGid != "" {
-    Recording, err = recording.ByReleaseGidAndGid(releaseGid, gid)
+  if releaseId != "" {
+    Recording, err = recording.ByReleaseIdAndId(releaseId, id)
   } else {
-    Recording, err = recording.ByGid(gid)
+    Recording, err = recording.ById(id)
   }
 
   if err == nil {

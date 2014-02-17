@@ -7,7 +7,7 @@ import (
 var DB *sql.DB
 
 type Artist struct {
-  Gid       string `json:"gid"`
+  Id       string `json:"id"`
   Name      string `json:"name"`
   SortName  string `json:"sortName"`
   Comment   string `json:"comment"`
@@ -17,12 +17,12 @@ type Artist struct {
 }
 
 type ReleaseArtist struct {
-  Gid   string `json:"gid"`
+  Id   string `json:"id"`
   Name  string `json:"name"`
 }
 
 type ReleaseGroup struct {
-  Gid               string           `json:"gid"`
+  Id               string           `json:"id"`
   Name              string           `json:"name"`
   Comment           string           `json:"comment"`
   FirstReleaseDate  string           `json:"firstReleaseDate"`
@@ -32,7 +32,7 @@ type ReleaseGroup struct {
 }
 
 type Release struct {
-  Gid               string           `json:"gid"`
+  Id               string           `json:"id"`
   Name              string           `json:"name"`
   Comment           string           `json:"comment"`
   Date              string           `json:"date,omitempty"`
@@ -44,7 +44,7 @@ type Release struct {
 
 
 type Recording struct {
-  Gid               string           `json:"gid"`
+  Id               string           `json:"id"`
   Name              string           `json:"name"`
   Comment           string           `json:"comment"`
   Length            int              `json:"length"`

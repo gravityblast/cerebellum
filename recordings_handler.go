@@ -10,12 +10,12 @@ import (
 )
 
 func RecordingsHandler(w traffic.ResponseWriter, r *traffic.Request) {
-  releaseGid  := r.URL.Query().Get("release_gid")
+  releaseId  := r.URL.Query().Get("release_id")
 
   var recordings  []*models.Recording
   var err         error
 
-  recordings, err = recording.AllByReleaseGid(releaseGid)
+  recordings, err = recording.AllByReleaseId(releaseId)
 
   if err == nil {
     json.NewEncoder(w).Encode(recordings)

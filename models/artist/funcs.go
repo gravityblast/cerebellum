@@ -6,11 +6,11 @@ import (
   "github.com/pilu/cerebellum/models"
 )
 
-func ByGid(gid string) (*models.Artist, error) {
+func ById(id string) (*models.Artist, error) {
   artist := &models.Artist{}
 
-  if !models.IsValidUUID(gid) {
-    return artist, models.InvalidUUID{ gid }
+  if !models.IsValidUUID(id) {
+    return artist, models.InvalidUUID{ id }
   }
 
   var _type    *sql.NullString
@@ -22,8 +22,8 @@ func ByGid(gid string) (*models.Artist, error) {
   var endDateMonth    *sql.NullInt64
   var endDateDay      *sql.NullInt64
 
-  row := models.DB.QueryRow(queryByGid, gid)
-  err := row.Scan(&artist.Gid, &artist.Name, &artist.SortName, &artist.Comment,
+  row := models.DB.QueryRow(queryById, id)
+  err := row.Scan(&artist.Id, &artist.Name, &artist.SortName, &artist.Comment,
                   &beginDateYear, &beginDateMonth, &beginDateDay,
                   &endDateYear, &endDateMonth, &endDateDay, &_type)
 
@@ -76,7 +76,7 @@ func AllByArtistCredit(artistCredit int) []*models.ReleaseArtist {
 
   for rows.Next() {
     artist := &models.ReleaseArtist{}
-    err := rows.Scan(&artist.Gid, &artist.Name)
+    err := rows.Scan(&artist.Id, &artist.Name)
     if err == nil {
       artists = append(artists, artist)
     }
@@ -85,14 +85,14 @@ func AllByArtistCredit(artistCredit int) []*models.ReleaseArtist {
   return artists
 }
 
-func Exists(gid string) bool {
-  if !models.IsValidUUID(gid) {
+func Exists(id string) bool {
+  if !models.IsValidUUID(id) {
     return false
   }
 
   var found int
 
-  row := models.DB.QueryRow(queryExists, gid)
+  row := models.DB.QueryRow(queryExists, id)
   err := row.Scan(&found)
   if err != nil {
     return false
@@ -101,18 +101,18 @@ func Exists(gid string) bool {
   return true
 }
 
-func HasRelease(artistGid, releaseGid string) bool {
-  if !models.IsValidUUID(artistGid) {
+func HasRelease(artistId, releaseId string) bool {
+  if !models.IsValidUUID(artistId) {
     return false
   }
 
-  if !models.IsValidUUID(releaseGid) {
+  if !models.IsValidUUID(releaseId) {
     return false
   }
 
   var found int
 
-  row := models.DB.QueryRow(queryHasRelease, artistGid, releaseGid)
+  row := models.DB.QueryRow(queryHasRelease, artistId, releaseId)
   err := row.Scan(&found)
   if err != nil {
     return false
@@ -121,18 +121,18 @@ func HasRelease(artistGid, releaseGid string) bool {
   return true
 }
 
-func HasReleaseGroup(artistGid, releaseGroupGid string) bool {
-  if !models.IsValidUUID(artistGid) {
+func HasReleaseGroup(artistId, releaseGroupId string) bool {
+  if !models.IsValidUUID(artistId) {
     return false
   }
 
-  if !models.IsValidUUID(releaseGroupGid) {
+  if !models.IsValidUUID(releaseGroupId) {
     return false
   }
 
   var found int
 
-  row := models.DB.QueryRow(queryHasReleaseGroup, artistGid, releaseGroupGid)
+  row := models.DB.QueryRow(queryHasReleaseGroup, artistId, releaseGroupId)
   err := row.Scan(&found)
   if err != nil {
     return false

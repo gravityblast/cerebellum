@@ -57,42 +57,42 @@ func RecordingNotFoundHandler(w traffic.ResponseWriter, r *traffic.Request) {
 }
 
 func CheckArtistFilter(w traffic.ResponseWriter, r *traffic.Request) {
-  artistGid := r.URL.Query().Get("artist_gid")
-  if artistGid == "" {
+  artistId := r.URL.Query().Get("artist_id")
+  if artistId == "" {
     return
   }
 
-  if !models.IsValidUUID(artistGid) {
+  if !models.IsValidUUID(artistId) {
     w.WriteHeader(http.StatusBadRequest)
     return
   }
 
-  if !artist.Exists(artistGid) {
+  if !artist.Exists(artistId) {
     ArtistNotFoundHandler(w, r)
     return
   }
 }
 
 func CheckReleaseFilter(w traffic.ResponseWriter, r *traffic.Request) {
-  artistGid   := r.URL.Query().Get("artist_gid")
-  releaseGid  := r.URL.Query().Get("release_gid")
+  artistId   := r.URL.Query().Get("artist_id")
+  releaseId  := r.URL.Query().Get("release_id")
 
-  if releaseGid == "" {
+  if releaseId == "" {
     return
   }
 
-  if !models.IsValidUUID(releaseGid) {
+  if !models.IsValidUUID(releaseId) {
     w.WriteHeader(http.StatusBadRequest)
     return
   }
 
-  if artistGid != "" {
-    if !models.IsValidUUID(artistGid) {
+  if artistId != "" {
+    if !models.IsValidUUID(artistId) {
       w.WriteHeader(http.StatusBadRequest)
       return
     }
 
-    if artist.HasRelease(artistGid, releaseGid) {
+    if artist.HasRelease(artistId, releaseId) {
       return
     }
 
@@ -100,32 +100,32 @@ func CheckReleaseFilter(w traffic.ResponseWriter, r *traffic.Request) {
     return
   }
 
-  if !release.Exists(releaseGid) {
+  if !release.Exists(releaseId) {
     ReleaseNotFoundHandler(w, r)
     return
   }
 }
 
 func CheckReleaseGroupFilter(w traffic.ResponseWriter, r *traffic.Request) {
-  artistGid       := r.URL.Query().Get("artist_gid")
-  releaseGroupGid := r.URL.Query().Get("release_group_gid")
+  artistId       := r.URL.Query().Get("artist_id")
+  releaseGroupId := r.URL.Query().Get("release_group_id")
 
-  if releaseGroupGid == "" {
+  if releaseGroupId == "" {
     return
   }
 
-  if !models.IsValidUUID(releaseGroupGid) {
+  if !models.IsValidUUID(releaseGroupId) {
     w.WriteHeader(http.StatusBadRequest)
     return
   }
 
-  if artistGid != "" {
-    if !models.IsValidUUID(artistGid) {
+  if artistId != "" {
+    if !models.IsValidUUID(artistId) {
       w.WriteHeader(http.StatusBadRequest)
       return
     }
 
-    if artist.HasReleaseGroup(artistGid, releaseGroupGid) {
+    if artist.HasReleaseGroup(artistId, releaseGroupId) {
       return
     }
 
@@ -133,7 +133,7 @@ func CheckReleaseGroupFilter(w traffic.ResponseWriter, r *traffic.Request) {
     return
   }
 
-  if !releasegroup.Exists(releaseGroupGid) {
+  if !releasegroup.Exists(releaseGroupId) {
     ReleaseGroupNotFoundHandler(w, r)
     return
   }

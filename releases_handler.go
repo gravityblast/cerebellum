@@ -10,16 +10,16 @@ import (
 )
 
 func ReleasesHandler(w traffic.ResponseWriter, r *traffic.Request) {
-  artistGid       := r.URL.Query().Get("artist_gid")
-  releaseGroupGid := r.URL.Query().Get("release_group_gid")
+  artistId       := r.URL.Query().Get("artist_id")
+  releaseGroupId := r.URL.Query().Get("release_group_id")
 
   var releases []*models.Release
   var err     error
 
-  if releaseGroupGid == "" {
-    releases, err = release.AllByArtistGid(artistGid)
+  if releaseGroupId == "" {
+    releases, err = release.AllByArtistId(artistId)
   } else {
-    releases, err = release.AllByReleaseGroupGid(releaseGroupGid)
+    releases, err = release.AllByReleaseGroupId(releaseGroupId)
   }
 
   if err == nil {

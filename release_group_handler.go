@@ -10,16 +10,16 @@ import (
 )
 
 func ReleaseGroupHandler(w traffic.ResponseWriter, r *traffic.Request) {
-  artistGid := r.URL.Query().Get("artist_gid")
-  gid       := r.URL.Query().Get("gid")
+  artistId := r.URL.Query().Get("artist_id")
+  id       := r.URL.Query().Get("id")
 
   var ReleaseGroup *models.ReleaseGroup
   var err          error
 
-  if artistGid != "" {
-    ReleaseGroup, err = releasegroup.ByArtistGidAndGid(artistGid, gid)
+  if artistId != "" {
+    ReleaseGroup, err = releasegroup.ByArtistIdAndId(artistId, id)
   } else {
-    ReleaseGroup, err = releasegroup.ByGid(gid)
+    ReleaseGroup, err = releasegroup.ById(id)
   }
 
   if err == nil {

@@ -1,6 +1,6 @@
 package releasegroup
 
-const queryAllByArtistGid = `
+const queryAllByArtistId = `
   SELECT
     RG.gid, RG.name, RG.comment, RG.artist_credit, RGPT.name,
     RGM.first_release_date_year, RGM.first_release_date_month,
@@ -20,7 +20,7 @@ const queryAllByArtistGid = `
   ORDER BY
     RGM.first_release_date_year, RGM.first_release_date_month, RGM.first_release_date_day;`
 
-const queryByGid = `
+const queryById = `
   SELECT
     RG.gid, RG.name, RG.comment, RG.artist_credit, RGPT.name,
     RGM.first_release_date_year, RGM.first_release_date_month,
@@ -34,7 +34,7 @@ const queryByGid = `
   WHERE
     RG.gid = $1 limit 1;`
 
-const queryByArtistGidAndGid = `
+const queryByArtistIdAndId = `
   SELECT
     RG.gid, RG.name, RG.comment, RG.artist_credit, RGPT.name,
     RGM.first_release_date_year, RGM.first_release_date_month,

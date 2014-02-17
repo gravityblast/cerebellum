@@ -16,7 +16,7 @@ func ScanRecord(scanner Scanner, releaseGroup *models.ReleaseGroup) error {
   var firstReleaseDateMonth  *sql.NullInt64
   var firstReleaseDateDay    *sql.NullInt64
 
-  err := scanner.Scan(&releaseGroup.Gid, &releaseGroup.Name, &releaseGroup.Comment, &releaseGroup.ArtistCredit,
+  err := scanner.Scan(&releaseGroup.Id, &releaseGroup.Name, &releaseGroup.Comment, &releaseGroup.ArtistCredit,
                       &_type, &firstReleaseDateYear, &firstReleaseDateMonth, &firstReleaseDateDay)
 
   if err != nil {
@@ -35,14 +35,14 @@ func ScanRecord(scanner Scanner, releaseGroup *models.ReleaseGroup) error {
   return nil
 }
 
-func AllByArtistGid(artistGid string) ([]*models.ReleaseGroup, error) {
+func AllByArtistId(artistId string) ([]*models.ReleaseGroup, error) {
   releaseGroups := make([]*models.ReleaseGroup, 0)
 
-  if !models.IsValidUUID(artistGid) {
-    return releaseGroups, models.InvalidUUID{ artistGid }
+  if !models.IsValidUUID(artistId) {
+    return releaseGroups, models.InvalidUUID{ artistId }
   }
 
-  rows, err := models.DB.Query(queryAllByArtistGid, artistGid)
+  rows, err := models.DB.Query(queryAllByArtistId, artistId)
   if err != nil {
     return releaseGroups, err
   }
@@ -59,14 +59,14 @@ func AllByArtistGid(artistGid string) ([]*models.ReleaseGroup, error) {
   return releaseGroups, nil
 }
 
-func ByGid(gid string) (*models.ReleaseGroup, error) {
+func ById(id string) (*models.ReleaseGroup, error) {
   releaseGroup := &models.ReleaseGroup{}
 
-  if !models.IsValidUUID(gid) {
-    return releaseGroup, models.InvalidUUID{ gid }
+  if !models.IsValidUUID(id) {
+    return releaseGroup, models.InvalidUUID{ id }
   }
 
-  row := models.DB.QueryRow(queryByGid, gid)
+  row := models.DB.QueryRow(queryById, id)
   err := ScanRecord(row, releaseGroup)
 
   if err == nil {
@@ -76,18 +76,18 @@ func ByGid(gid string) (*models.ReleaseGroup, error) {
   return releaseGroup, err
 }
 
-func ByArtistGidAndGid(artistGid, gid string) (*models.ReleaseGroup, error) {
+func ByArtistIdAndId(artistId, id string) (*models.ReleaseGroup, error) {
   releaseGroup := &models.ReleaseGroup{}
 
-  if !models.IsValidUUID(artistGid) {
-    return releaseGroup, models.InvalidUUID{ artistGid }
+  if !models.IsValidUUID(artistId) {
+    return releaseGroup, models.InvalidUUID{ artistId }
   }
 
-  if !models.IsValidUUID(gid) {
-    return releaseGroup, models.InvalidUUID{ gid }
+  if !models.IsValidUUID(id) {
+    return releaseGroup, models.InvalidUUID{ id }
   }
 
-  row := models.DB.QueryRow(queryByArtistGidAndGid, artistGid, gid)
+  row := models.DB.QueryRow(queryByArtistIdAndId, artistId, id)
   err := ScanRecord(row, releaseGroup)
 
   if err == nil {
@@ -97,14 +97,14 @@ func ByArtistGidAndGid(artistGid, gid string) (*models.ReleaseGroup, error) {
   return releaseGroup, err
 }
 
-func Exists(gid string) bool {
-  if !models.IsValidUUID(gid) {
+func Exists(id string) bool {
+  if !models.IsValidUUID(id) {
     return false
   }
 
   var found int
 
-  row := models.DB.QueryRow(queryExists, gid)
+  row := models.DB.QueryRow(queryExists, id)
   err := row.Scan(&found)
   if err != nil {
     return false

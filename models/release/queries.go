@@ -1,6 +1,6 @@
 package release
 
-const queryByGid = `
+const queryById = `
   SELECT
     R.gid, R.name, R.comment, R.artist_credit, RS.name, RP.name, RGPT.name as type
   FROM
@@ -18,7 +18,7 @@ const queryByGid = `
 
 const queryExists = `SELECT 1 FROM release where gid = $1`
 
-const queryAllByArtistGid = `
+const queryAllByArtistId = `
   SELECT
     gid, name, comment, status, type, packaging, date_year, date_month, date_day
   FROM (
@@ -52,7 +52,7 @@ const queryAllByArtistGid = `
   ) RELEASES
   WHERE RELEASES.release_row_number = 1;`
 
-const queryAllByReleaseGroupGid = `
+const queryAllByReleaseGroupId = `
   SELECT
     R.gid, R.name, R.comment, RS.name as status, RGPT.name as type, RP.name as packaging
   FROM

@@ -6,17 +6,17 @@ import (
 )
 
 
-func TestArtistHandler_WithExistingGid(t *testing.T) {
+func TestArtistHandler_WithExistingId(t *testing.T) {
   recorder := newTestRequest("GET", "/artists/056e4f3e-d505-4dad-8ec1-d04f521cbb56")
 
   body := string(recorder.Body.Bytes())
-  expectedBody := `{"gid":"056e4f3e-d505-4dad-8ec1-d04f521cbb56","name":"Daft Punk","sortName":"Daft Punk","comment":"","beginDate":"1992","endDate":"","type":"Group"}` + "\n"
+  expectedBody := `{"id":"056e4f3e-d505-4dad-8ec1-d04f521cbb56","name":"Daft Punk","sortName":"Daft Punk","comment":"","beginDate":"1992","endDate":"","type":"Group"}` + "\n"
 
   assert.Equal(t, expectedBody, body)
   assert.Equal(t, 200, recorder.Code)
 }
 
-func TestArtistHandler_WithGidNotFound(t *testing.T) {
+func TestArtistHandler_WithIdNotFound(t *testing.T) {
   recorder := newTestRequest("GET", "/artists/00000000-0000-0000-0000-000000000000")
 
   body := string(recorder.Body.Bytes())

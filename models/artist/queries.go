@@ -1,6 +1,6 @@
 package artist
 
-const queryByGid = `
+const queryById = `
   SELECT
     A.gid, A.name, A.sort_name, A.comment,
     A.begin_date_year, A.begin_date_month, A.begin_date_day,

@@ -1,6 +1,6 @@
 package recording
 
-const queryAllByReleaseGid = `
+const queryAllByReleaseId = `
   SELECT
     REC.gid, REC.name, REC.comment, REC.length
   FROM
@@ -15,7 +15,7 @@ const queryAllByReleaseGid = `
     REL.gid = $1
   ORDER BY M.position, T.position;`
 
-const queryByGid = `
+const queryById = `
   SELECT
     R.gid, R.name, R.comment, R.length, R.artist_credit
   FROM
@@ -23,7 +23,7 @@ const queryByGid = `
   WHERE
     R.gid = $1 limit 1;`
 
-const queryByReleaseGidAndGid = `
+const queryByReleaseIdAndId = `
   SELECT
     REC.gid, REC.name, REC.comment, REC.length, REC.artist_credit
   FROM

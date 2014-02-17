@@ -6,11 +6,11 @@ import (
   "github.com/pilu/cerebellum/models/artist"
 )
 
-func ByGid(gid string) (*models.Release, error) {
+func ById(id string) (*models.Release, error) {
   release := &models.Release{}
 
-  if !models.IsValidUUID(gid) {
-    return release, models.InvalidUUID{ gid }
+  if !models.IsValidUUID(id) {
+    return release, models.InvalidUUID{ id }
   }
 
   var status        *sql.NullString
@@ -18,8 +18,8 @@ func ByGid(gid string) (*models.Release, error) {
   var _type        *sql.NullString
   var artistCredit  int
 
-  row := models.DB.QueryRow(queryByGid, gid)
-  err := row.Scan(&release.Gid, &release.Name, &release.Comment, &artistCredit, &status, &packaging, &_type)
+  row := models.DB.QueryRow(queryById, id)
+  err := row.Scan(&release.Id, &release.Name, &release.Comment, &artistCredit, &status, &packaging, &_type)
 
   if err != nil {
     return release, err
@@ -42,14 +42,14 @@ func ByGid(gid string) (*models.Release, error) {
   return release, nil
 }
 
-func ByArtistGidAndGid(artistGid, gid string) (*models.Release, error) {
-  release, err := ByGid(gid)
+func ByArtistIdAndId(artistId, id string) (*models.Release, error) {
+  release, err := ById(id)
   if err != nil {
     return release, err
   }
 
   for _, artist := range release.Artists {
-    if artist.Gid == artistGid {
+    if artist.Id == artistId {
       return release, nil
     }
   }
@@ -57,9 +57,9 @@ func ByArtistGidAndGid(artistGid, gid string) (*models.Release, error) {
   return release, sql.ErrNoRows
 }
 
-func AllByArtistGid(artistGid string) ([]*models.Release, error) {
+func AllByArtistId(artistId string) ([]*models.Release, error) {
   releases  := make([]*models.Release, 0)
-  rows, err := models.DB.Query(queryAllByArtistGid, artistGid)
+  rows, err := models.DB.Query(queryAllByArtistId, artistId)
   if err != nil {
     return releases, err
   }
@@ -74,7 +74,7 @@ func AllByArtistGid(artistGid string) ([]*models.Release, error) {
     var dateMonth *sql.NullInt64
     var dateDay   *sql.NullInt64
 
-    err := rows.Scan(&release.Gid, &release.Name, &release.Comment, &status, &_type, &packaging, &dateYear, &dateMonth, &dateDay)
+    err := rows.Scan(&release.Id, &release.Name, &release.Comment, &status, &_type, &packaging, &dateYear, &dateMonth, &dateDay)
     if err != nil {
       return releases, err
     }
@@ -102,9 +102,9 @@ func AllByArtistGid(artistGid string) ([]*models.Release, error) {
   return releases, nil
 }
 
-func AllByReleaseGroupGid(releaseGroupGid string) ([]*models.Release, error) {
+func AllByReleaseGroupId(releaseGroupId string) ([]*models.Release, error) {
   releases  := make([]*models.Release, 0)
-  rows, err := models.DB.Query(queryAllByReleaseGroupGid, releaseGroupGid)
+  rows, err := models.DB.Query(queryAllByReleaseGroupId, releaseGroupId)
   if err != nil {
     return releases, err
   }
@@ -116,7 +116,7 @@ func AllByReleaseGroupGid(releaseGroupGid string) ([]*models.Release, error) {
     var _type     *sql.NullString
     var packaging *sql.NullString
 
-    err := rows.Scan(&release.Gid, &release.Name, &release.Comment, &status, &_type, &packaging)
+    err := rows.Scan(&release.Id, &release.Name, &release.Comment, &status, &_type, &packaging)
     if err != nil {
       return releases, err
     }
@@ -139,14 +139,14 @@ func AllByReleaseGroupGid(releaseGroupGid string) ([]*models.Release, error) {
   return releases, nil
 }
 
-func Exists(gid string) bool {
-  if !models.IsValidUUID(gid) {
+func Exists(id string) bool {
+  if !models.IsValidUUID(id) {
     return false
   }
 
   var found int
 
-  row := models.DB.QueryRow(queryExists, gid)
+  row := models.DB.QueryRow(queryExists, id)
   err := row.Scan(&found)
   if err != nil {
     return false

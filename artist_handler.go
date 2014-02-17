@@ -10,8 +10,8 @@ import (
 )
 
 func ArtistHandler(w traffic.ResponseWriter, r *traffic.Request) {
-  gid := r.URL.Query().Get("gid")
-  Artist, err := artist.ByGid(gid)
+  id := r.URL.Query().Get("id")
+  Artist, err := artist.ById(id)
 
   if err == nil {
     json.NewEncoder(w).Encode(Artist)

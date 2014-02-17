@@ -5,21 +5,21 @@ import (
   "github.com/pilu/cerebellum/models/artist"
 )
 
-func AllByReleaseGid(releaseGid string) ([]*models.Recording, error) {
+func AllByReleaseId(releaseId string) ([]*models.Recording, error) {
   recordings := make([]*models.Recording, 0)
 
-  if !models.IsValidUUID(releaseGid) {
-    return recordings, models.InvalidUUID{ releaseGid }
+  if !models.IsValidUUID(releaseId) {
+    return recordings, models.InvalidUUID{ releaseId }
   }
 
-  rows, err := models.DB.Query(queryAllByReleaseGid, releaseGid)
+  rows, err := models.DB.Query(queryAllByReleaseId, releaseId)
   if err != nil {
     return recordings, err
   }
 
   for rows.Next() {
     recording := &models.Recording{}
-    err := rows.Scan(&recording.Gid, &recording.Name, &recording.Comment, &recording.Length)
+    err := rows.Scan(&recording.Id, &recording.Name, &recording.Comment, &recording.Length)
     if err != nil {
       return recordings, err
     }
@@ -30,17 +30,17 @@ func AllByReleaseGid(releaseGid string) ([]*models.Recording, error) {
   return recordings, nil
 }
 
-func ByGid(gid string) (*models.Recording, error) {
+func ById(id string) (*models.Recording, error) {
   recording := &models.Recording{}
 
-  if !models.IsValidUUID(gid) {
-    return recording, models.InvalidUUID{ gid }
+  if !models.IsValidUUID(id) {
+    return recording, models.InvalidUUID{ id }
   }
 
   var artistCredit int
 
-  row := models.DB.QueryRow(queryByGid, gid)
-  err := row.Scan(&recording.Gid, &recording.Name, &recording.Comment, &recording.Length, &artistCredit)
+  row := models.DB.QueryRow(queryById, id)
+  err := row.Scan(&recording.Id, &recording.Name, &recording.Comment, &recording.Length, &artistCredit)
 
   if err != nil {
     return recording, err
@@ -51,21 +51,21 @@ func ByGid(gid string) (*models.Recording, error) {
   return recording, nil
 }
 
-func ByReleaseGidAndGid(releaseGid, gid string) (*models.Recording, error) {
+func ByReleaseIdAndId(releaseId, id string) (*models.Recording, error) {
   recording := &models.Recording{}
 
-  if !models.IsValidUUID(releaseGid) {
-    return recording, models.InvalidUUID{ releaseGid }
+  if !models.IsValidUUID(releaseId) {
+    return recording, models.InvalidUUID{ releaseId }
   }
 
-  if !models.IsValidUUID(gid) {
-    return recording, models.InvalidUUID{ gid }
+  if !models.IsValidUUID(id) {
+    return recording, models.InvalidUUID{ id }
   }
 
   var artistCredit int
 
-  row := models.DB.QueryRow(queryByReleaseGidAndGid, releaseGid, gid)
-  err := row.Scan(&recording.Gid, &recording.Name, &recording.Comment, &recording.Length, &artistCredit)
+  row := models.DB.QueryRow(queryByReleaseIdAndId, releaseId, id)
+  err := row.Scan(&recording.Id, &recording.Name, &recording.Comment, &recording.Length, &artistCredit)
 
   if err != nil {
     return recording, err
