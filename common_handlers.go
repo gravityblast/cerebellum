@@ -17,6 +17,7 @@ func ErrorHandler(w traffic.ResponseWriter, r *traffic.Request, err interface{})
 }
 
 func NotFoundHandler(w traffic.ResponseWriter, r *traffic.Request) {
+	w.WriteHeader(http.StatusNotFound)
   json.NewEncoder(w).Encode(map[string]string{
     "error": "not found",
   })
