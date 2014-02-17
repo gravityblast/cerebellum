@@ -1,15 +1,15 @@
 package main
 
 import (
-  "encoding/json"
-  "github.com/pilu/traffic"
+	"encoding/json"
+	"github.com/pilu/traffic"
 )
 
 type RootResponse struct {
-  Version string `json:"version"`
+	Version string `json:"version"`
 }
 
 func RootHandler(w traffic.ResponseWriter, r *traffic.Request) {
-  response := RootResponse{ VERSION }
-  json.NewEncoder(w).Encode(response)
+	response := RootResponse{VERSION}
+	json.NewEncoder(w).Encode(response)
 }
